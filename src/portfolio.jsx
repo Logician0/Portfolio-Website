@@ -1,8 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Camera, Code, Film, Play, Pause, Volume2, Maximize, X, ChevronLeft, ChevronRight, Moon, Sun, Menu, Mail, Instagram, Youtube, Linkedin, Twitter, ArrowRight, ArrowUp, Check, ZoomIn } from 'lucide-react';
 
+// --- HELPER FOR BACK BUTTON LOGIC ---
+const useModalHistory = (isOpen, onClose) => {
+  useEffect(() => {
+    if (isOpen) {
+      // Push a new state when modal opens
+      window.history.pushState({ modalOpen: true }, '');
+      
+      const handlePopState = () => {
+        // If back button is pressed, close modal
+        onClose();
+      };
+
+      window.addEventListener('popstate', handlePopState);
+
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+      };
+    }
+  }, [isOpen, onClose]);
+};
+
 // Service Page Component
 const ServicePage = ({ isOpen, onClose, service, onCategoryClick }) => {
+  useModalHistory(isOpen, onClose); // Attach back button logic
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -83,6 +106,7 @@ const ServicePage = ({ isOpen, onClose, service, onCategoryClick }) => {
 
 // Gallery Modal Component
 const GalleryModal = ({ isOpen, onClose, images, title }) => {
+  useModalHistory(isOpen, onClose);
   const [selectedImage, setSelectedImage] = useState(null);
 
   if (!isOpen) return null;
@@ -131,6 +155,7 @@ const GalleryModal = ({ isOpen, onClose, images, title }) => {
 
 // Video Modal Component
 const VideoModal = ({ isOpen, onClose, videos, category }) => {
+  useModalHistory(isOpen, onClose);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -169,6 +194,7 @@ const VideoModal = ({ isOpen, onClose, videos, category }) => {
   if (!isOpen) return null;
 
   const currentVideo = videos[currentIndex];
+  const isShorts = category === 'Shorts';
 
   return (
     <div className="modal-overlay video-modal-overlay" onClick={onClose}>
@@ -178,7 +204,8 @@ const VideoModal = ({ isOpen, onClose, videos, category }) => {
         </button>
         
         <div className="video-player-section">
-          <div className="video-player-container">
+          {/* Added logic for Shorts vs Standard */}
+          <div className={`video-player-container ${isShorts ? 'shorts-mode' : ''}`}>
             {isPlaying && currentVideo.youtubeId ? (
               <div className="video-iframe-wrapper">
                 <iframe 
@@ -676,8 +703,6 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
         onClose={() => setActiveServicePage(null)}
         service={activeServicePage}
         onCategoryClick={(categoryId) => {
-          // MODIFIED: Do NOT set service page to null here.
-          // setActiveServicePage(null); 
           if (categoryId === 'posts' || categoryId === 'thumbnails') {
             setActiveModal(categoryId);
           } else if (['ecommerce', 'saas', 'portfolio', 'agency'].includes(categoryId)) {
@@ -791,7 +816,7 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
         }
 
         .logo-img {
-          height: 40px; /* Bigger logo size */
+          height: 40px; 
           width: auto;
           object-fit: contain;
         }
@@ -1655,11 +1680,29 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
         .video-player-section {
             overflow-y: auto;
             flex: 1;
+            /* FIX: Ensure video section takes space but centers content */
+            display: flex;
+            flex-direction: column;
         }
 
         .video-player-container {
           background: black;
           width: 100%;
+          flex-shrink: 0;
+        }
+        
+        /* SHORTS MODE CSS */
+        .video-player-container.shorts-mode {
+           display: flex;
+           justify-content: center;
+           background: #000;
+           padding: 1rem 0;
+        }
+        .shorts-mode .video-iframe-wrapper,
+        .shorts-mode .video-player {
+           width: auto;
+           height: 70vh; /* Taller for shorts */
+           aspect-ratio: 9/16;
         }
 
         .video-iframe-wrapper {
@@ -1928,10 +1971,21 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
 
         @media (max-width: 768px) {
           .section {
-            padding: 3rem 1.5rem; /* Reduced global padding */
+            padding: 3rem 1.5rem;
           }
 
-          /* HERO FIX: Reduced thick padding */
+          /* HEADER FIX: Thinner, Single Line */
+          .nav {
+            padding: 0.75rem 1.5rem; /* Reduced padding */
+          }
+          .logo-main {
+             font-size: 1.1rem;
+             white-space: nowrap; /* Forces single line */
+          }
+          .logo-img {
+             height: 32px;
+          }
+
           .hero {
              min-height: auto;
              padding: 6rem 1.5rem 3rem;
@@ -1969,30 +2023,36 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
             grid-template-columns: 1fr;
           }
           
-          /* SERVICES CARD FIX: Reduced padding */
           .service-card {
             padding: 1.5rem;
           }
 
-          /* PROCESS FIX: Horizontal Scroll (Single Line) */
+          /* PROCESS FIX: Vertical Stack, Compact, No Scroll */
           .workflow-timeline {
-            display: flex; /* Override Grid */
-            grid-template-columns: none;
-            overflow-x: auto;
-            padding-bottom: 1.5rem;
-            width: 100%;
+            display: flex;
+            flex-direction: column; /* Vertical stack */
             gap: 1rem;
-            scroll-snap-type: x mandatory;
           }
 
           .workflow-step {
-            min-width: 160px; /* Prevent shrinking */
-            scroll-snap-align: center;
+            display: flex; /* Row layout for icon + text */
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+            margin-bottom: 0;
           }
-
-          .skills-highlight {
-            grid-template-columns: 1fr;
-            gap: 2rem;
+          
+          .step-number {
+             margin: 0;
+             width: 32px; /* Small icon */
+             height: 32px;
+             font-size: 1rem;
+             flex-shrink: 0;
+          }
+          
+          .workflow-step h3 {
+             font-size: 1rem;
+             margin: 0;
           }
 
           .gallery-grid {
@@ -2003,15 +2063,13 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
             grid-template-columns: 1fr;
           }
 
-          /* TESTIMONIAL FIX: Reduced padding */
           .testimonial-card {
             padding: 1.5rem;
           }
 
-          /* TOOLS FIX: 2 Column Layout */
           .tools-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Force 2 cols */
+            grid-template-columns: 1fr 1fr;
             gap: 0.75rem;
           }
           .tool-item {
@@ -2020,15 +2078,43 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
             padding: 1rem 0.5rem;
           }
           
-          /* ABOUT FIX: Reduced Spacing */
+          /* ABOUT FIX: Side by side (Split) */
           .about-section {
              padding: 3rem 1.5rem;
           }
           .about-grid {
-             gap: 2rem;
+             display: flex; /* Row layout */
+             flex-direction: row;
+             align-items: flex-start;
+             gap: 1.5rem;
+          }
+          .about-image {
+             width: 35%; /* Left side small */
+             flex-shrink: 0;
           }
           .profile-photo {
-             padding-top: 75%; /* Slightly shorter */
+             padding-top: 100%; /* Square aspect ratio */
+             border-radius: 12px;
+          }
+          .about-content {
+             width: 65%; /* Right side text */
+          }
+          .section-title {
+             text-align: left; /* Align title left */
+             margin-bottom: 1rem;
+             font-size: 2rem;
+          }
+          .about-text {
+             font-size: 0.85rem; /* Smaller text */
+             line-height: 1.5;
+             margin-bottom: 0.5rem;
+          }
+          .skills-highlight {
+             display: none; /* Hide stats on mobile to save space */
+          }
+          .btn-primary {
+             padding: 0.75rem 1.5rem;
+             font-size: 0.9rem;
           }
 
           .service-page-content,
@@ -2042,15 +2128,18 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
             font-size: 2rem;
           }
           
+          /* VIDEO FIX: Center Middle, Spacing */
           .video-modal-content {
               width: 100vw;
               height: 100vh;
               max-height: 100vh;
               border-radius: 0;
+              justify-content: center; /* Vertical Center */
           }
           
-          .logo-img {
-            height: 50px;
+          .video-player-section {
+              flex: 0 1 auto; /* Don't stretch */
+              margin: auto 0; /* Vertical center */
           }
         }
       `}</style>
