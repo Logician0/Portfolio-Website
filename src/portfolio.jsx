@@ -487,27 +487,27 @@ export default function Portfolio() {
             </div>
 
             <div className="about-content animate-on-scroll">
-              <h2 className="section-title">About</h2>
+              <h2 className="section-title">About Me</h2>
               <p className="about-text">
-                I'm a multi-disciplinary creative director with 8+ years of experience 
-                transforming bold visions into award-winning digital experiences.
+                Hey, I’m Suraj 👋
+I help creators and brands turn ideas into engaging videos, scroll-stopping thumbnails, and clean, modern websites.
               </p>
               <p className="about-text">
-                My work has been featured on Awwwards, recognized by industry leaders, 
-                and trusted by brands that demand excellence.
+                I love building visuals that don’t just look good, they work. From grabbing attention to creating connection and driving action, everything I create is focused on real results.
+If you want a creative partner who’s passionate, detail-driven, and easy to work with, let’s build something awesome 🚀
               </p>
 
               <div className="skills-highlight">
                 <div className="skill-item">
-                  <span className="skill-number">150+</span>
+                  <span className="skill-number">100+</span>
                   <span className="skill-label">Projects</span>
                 </div>
                 <div className="skill-item">
-                  <span className="skill-number">50+</span>
+                  <span className="skill-number">20+</span>
                   <span className="skill-label">Clients</span>
                 </div>
                 <div className="skill-item">
-                  <span className="skill-number">12</span>
+                  <span className="skill-number">2</span>
                   <span className="skill-label">Awards</span>
                 </div>
               </div>
@@ -1116,7 +1116,7 @@ export default function Portfolio() {
 
         .workflow-timeline {
           display: grid;
-          grid-template-columns: repeat(5, 1fr); /* Forced to 5 columns */
+          grid-template-columns: repeat(5, 1fr);
           gap: 2.5rem;
           max-width: 1100px;
           margin: 0 auto;
@@ -1220,7 +1220,7 @@ export default function Portfolio() {
         }
 
         .tools-grid {
-          display: flex; /* Centered layout */
+          display: flex;
           flex-wrap: wrap;
           justify-content: center;
           gap: 1.5rem;
@@ -1632,28 +1632,26 @@ export default function Portfolio() {
           font-weight: 600;
         }
 
-        /* Video Modal Fix & Polish */
         .video-modal-overlay {
           background: rgba(0, 0, 0, 0.95);
           backdrop-filter: blur(10px);
           padding: 1rem;
-          z-index: 2010; /* FIX: Added higher z-index to overlay */
+          z-index: 2010;
         }
 
         .video-modal-content {
           max-width: 1000px;
-          width: 95vw; /* FIX: Responsive width */
-          max-height: 90vh; /* FIX: Prevent vertical overflow */
+          width: 95vw;
+          max-height: 90vh;
           position: relative;
           background: var(--bg-secondary);
           border-radius: 24px;
-          overflow: hidden; /* Contains children */
+          overflow: hidden;
           display: flex;
           flex-direction: column;
           box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
         }
         
-        /* Inner scroll container for landscape mobile */
         .video-player-section {
             overflow-y: auto;
             flex: 1;
@@ -1664,7 +1662,6 @@ export default function Portfolio() {
           width: 100%;
         }
 
-        /* YouTube Iframe Wrapper */
         .video-iframe-wrapper {
           width: 100%;
           aspect-ratio: 16/9;
@@ -1732,7 +1729,6 @@ export default function Portfolio() {
           margin-left: 6px; 
         }
         
-        /* Video Controls Bar */
         .video-controls {
           position: absolute;
           bottom: 0;
@@ -1893,17 +1889,6 @@ export default function Portfolio() {
           box-shadow: 0 0 0 2px var(--text-primary);
         }
 
-        .thumb-overlay {
-          background: rgba(0,0,0,0.5);
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          backdrop-filter: blur(4px);
-        }
-
         @media (max-width: 968px) {
           .about-grid {
             grid-template-columns: 1fr;
@@ -1936,21 +1921,33 @@ export default function Portfolio() {
               text-align: center;
           }
           
-          /* Medium screen adjustment for process */
           .workflow-timeline {
              grid-template-columns: repeat(3, 1fr);
           }
         }
 
         @media (max-width: 768px) {
+          .section {
+            padding: 3rem 1.5rem; /* Reduced global padding */
+          }
+
+          /* HERO FIX: Reduced thick padding */
+          .hero {
+             min-height: auto;
+             padding: 6rem 1.5rem 3rem;
+          }
+          .hero-title {
+             font-size: 2.5rem;
+          }
+          .hero-subtitle {
+             font-size: 1rem;
+             margin-bottom: 2rem;
+          }
+
           .nav-links {
             display: none;
           }
           
-          .hero-title {
-             font-size: 3rem;
-          }
-
           .nav-links.active {
             display: flex;
             flex-direction: column;
@@ -1971,10 +1968,26 @@ export default function Portfolio() {
           .services-grid {
             grid-template-columns: 1fr;
           }
+          
+          /* SERVICES CARD FIX: Reduced padding */
+          .service-card {
+            padding: 1.5rem;
+          }
 
-          /* Stack process steps on mobile */
+          /* PROCESS FIX: Horizontal Scroll (Single Line) */
           .workflow-timeline {
-            grid-template-columns: 1fr;
+            display: flex; /* Override Grid */
+            grid-template-columns: none;
+            overflow-x: auto;
+            padding-bottom: 1.5rem;
+            width: 100%;
+            gap: 1rem;
+            scroll-snap-type: x mandatory;
+          }
+
+          .workflow-step {
+            min-width: 160px; /* Prevent shrinking */
+            scroll-snap-align: center;
           }
 
           .skills-highlight {
@@ -1988,6 +2001,34 @@ export default function Portfolio() {
 
           .category-cards-grid {
             grid-template-columns: 1fr;
+          }
+
+          /* TESTIMONIAL FIX: Reduced padding */
+          .testimonial-card {
+            padding: 1.5rem;
+          }
+
+          /* TOOLS FIX: 2 Column Layout */
+          .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Force 2 cols */
+            gap: 0.75rem;
+          }
+          .tool-item {
+            min-width: 0;
+            width: 100%;
+            padding: 1rem 0.5rem;
+          }
+          
+          /* ABOUT FIX: Reduced Spacing */
+          .about-section {
+             padding: 3rem 1.5rem;
+          }
+          .about-grid {
+             gap: 2rem;
+          }
+          .profile-photo {
+             padding-top: 75%; /* Slightly shorter */
           }
 
           .service-page-content,
