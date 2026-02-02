@@ -34,25 +34,24 @@ const ServicePage = ({ isOpen, onClose, service, onCategoryClick }) => {
 
   if (!isOpen) return null;
 
-  // Added placeholder images for categories
   const serviceCategories = {
     design: [
-      { id: 'posts', title: 'Posts', description: 'Social media posts', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
-      { id: 'thumbnails', title: 'Thumbnails', description: 'Video thumbnails', image: 'https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #2c2c2c 100%)' }
+      { id: 'posts', title: 'Posts', description: 'Social media', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
+      { id: 'thumbnails', title: 'Thumbnails', description: 'Clickable covers', image: 'https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #2c2c2c 100%)' }
     ],
     video: [
-      { id: 'shorts', title: 'Shorts & Reels', description: 'Vertical videos', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111111 0%, #444444 100%)' },
-      { id: 'promos', title: 'Promos', description: 'Brand videos', image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
-      { id: 'podcasts', title: 'Podcasts', description: 'Episode editing', image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #333333 100%)' },
-      { id: 'ai', title: 'AI Videos', description: 'AI content', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #383838 100%)' },
-      { id: 'cinematic', title: 'Cinematic', description: 'High-end edits', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%)' },
-      { id: 'travel', title: 'Travel Videos', description: 'Vlogs', image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111111 0%, #2d2d2d 100%)' }
+      { id: 'shorts', title: 'Shorts & Reels', description: 'Vertical format', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111111 0%, #444444 100%)' },
+      { id: 'promos', title: 'Promos', description: 'Brand videos', image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
+      { id: 'podcasts', title: 'Podcasts', description: 'Full episodes', image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #333333 100%)' },
+      { id: 'ai', title: 'AI Videos', description: 'Generated content', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #383838 100%)' },
+      { id: 'cinematic', title: 'Cinematic', description: 'High-end visuals', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%)' },
+      { id: 'travel', title: 'Travel', description: 'Vlogs & Trips', image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111111 0%, #2d2d2d 100%)' }
     ],
     web: [
-      { id: 'ecommerce', title: 'E-commerce', description: 'Online stores', image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
-      { id: 'saas', title: 'SaaS', description: 'Web apps', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #222222 100%)' },
-      { id: 'portfolio', title: 'Portfolios', description: 'Personal sites', image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #4a4a4a 100%)' },
-      { id: 'agency', title: 'Agency', description: 'Business sites', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #0f0f0f 0%, #3a3a3a 100%)' }
+      { id: 'ecommerce', title: 'E-commerce', description: 'Online Stores', image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
+      { id: 'saas', title: 'SaaS', description: 'Web Apps', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #222222 100%)' },
+      { id: 'portfolio', title: 'Portfolios', description: 'Personal Sites', image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #4a4a4a 100%)' },
+      { id: 'agency', title: 'Agency', description: 'Business Sites', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #0f0f0f 0%, #3a3a3a 100%)' }
     ]
   };
 
@@ -83,7 +82,7 @@ const ServicePage = ({ isOpen, onClose, service, onCategoryClick }) => {
               }}
               onClick={() => onCategoryClick(category.id)}
             >
-              <img src={category.image} alt={category.title} className="card-bg-image" />
+              <img src={category.image} alt="" className="card-bg-image" />
               <div className="category-card-overlay"></div>
               <div className="category-card-content">
                 <h3>{category.title}</h3>
@@ -141,7 +140,7 @@ const GalleryModal = ({ isOpen, onClose, images, title }) => {
           </button>
           <div className="lightbox-content" onClick={e => e.stopPropagation()}>
             <div className="lightbox-image">
-              <img src={selectedImage.image} alt={selectedImage.title} style={{maxWidth: '100%', maxHeight: '100%'}} />
+              <img src={selectedImage.image} alt={selectedImage.title} />
             </div>
           </div>
         </div>
@@ -191,8 +190,8 @@ const VideoModal = ({ isOpen, onClose, videos, category }) => {
   if (!isOpen) return null;
 
   const currentVideo = videos[currentIndex];
-  // Auto-detect Shorts based on category name
-  const isShorts = category && (category.includes('Shorts') || category.includes('Reels'));
+  // Auto detect: check explicit flag OR category name
+  const isVerticalVideo = currentVideo.isVertical || (category && (category.includes('Shorts') || category.includes('Reels')));
 
   return (
     <div className="modal-overlay video-modal-overlay" onClick={onClose}>
@@ -202,8 +201,7 @@ const VideoModal = ({ isOpen, onClose, videos, category }) => {
         </button>
         
         <div className="video-player-section">
-          {/* Shorts detection applied here */}
-          <div className={`video-player-container ${isShorts ? 'shorts-mode' : ''}`}>
+          <div className={`video-player-container ${isVerticalVideo ? 'shorts-mode' : ''}`}>
             {isPlaying && currentVideo.youtubeId ? (
               <div className="video-iframe-wrapper">
                 <iframe 
@@ -318,29 +316,27 @@ export default function Portfolio() {
     return () => observer.disconnect();
   }, []);
 
-  // Added placeholder images for gallery items
   const postsImages = [
-    { title: 'Brand Identity', image: 'https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
-    { title: 'Social Campaign', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
-    { title: 'Product Launch', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
-    { title: 'Event Graphics', image: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #050505 0%, #1f1f1f 100%)' },
-    { title: 'Digital Marketing', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #222 0%, #444 100%)' },
-    { title: 'UI Design', image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }
+    { title: 'Brand Identity', image: 'https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
+    { title: 'Social Campaign', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
+    { title: 'Product Launch', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
+    { title: 'Event Graphics', image: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #050505 0%, #1f1f1f 100%)' },
+    { title: 'Digital Marketing', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #222 0%, #444 100%)' },
+    { title: 'UI Design', image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }
   ];
 
   const thumbnailImages = [
-    { title: 'YouTube Thumbnail', image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
-    { title: 'Video Cover', image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
-    { title: 'Podcast Art', image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #444 100%)' },
-    { title: 'Stream Graphics', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #050505 0%, #2a2a2a 100%)' }
+    { title: 'YouTube Thumbnail', image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
+    { title: 'Video Cover', image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
+    { title: 'Podcast Art', image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #444 100%)' },
+    { title: 'Stream Graphics', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #050505 0%, #2a2a2a 100%)' }
   ];
 
   const videoCategories = {
     shorts: [
-      { title: 'Filmmaking Ep1', youtubeId: 'Eh1w-Vv2ShA', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
-      { title: 'Filmmaking Ep2', youtubeId: 'B3oxUCV6zPg', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
-      { title: 'Filmmaking Ep3', youtubeId: 'lN2rqP5-wuc', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
-       { title: 'Filmmaking Ep3', youtubeId: 'lN2rqP5-wuc', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' }
+      { title: 'Filmmaking Ep1', isVertical: true, youtubeId: 'Eh1w-Vv2ShA', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
+      { title: 'Filmmaking Ep2', isVertical: true, youtubeId: 'B3oxUCV6zPg', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
+      { title: 'Filmmaking Ep3', isVertical: true, youtubeId: 'lN2rqP5-wuc', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' }
     ],
     promos: [
       { title: 'Jar App By Sahil Gambhir', youtubeId: 'hFGV4zHmXxY', gradient: 'linear-gradient(135deg, #050505 0%, #1f1f1f 100%)' },
@@ -395,7 +391,6 @@ export default function Portfolio() {
       <nav className="nav">
         <div className="nav-container">
           <div className="nav-logo" onClick={scrollToTop} style={{cursor: 'pointer'}}>
-            {/* REPLACE THIS URL WITH YOUR PNG PATH */}
             <img src="/logo.png" alt="Logo" className="logo-img" />
             <span className="logo-main">Logician Creatives</span>
           </div>
@@ -460,8 +455,7 @@ export default function Portfolio() {
               className="service-card animate-on-scroll" 
               onClick={() => setActiveServicePage('design')}
             >
-              {/* Added Image Background */}
-              <img src="https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=1000&auto=format&fit=crop" alt="Design" className="card-bg-image" />
+              <img src="https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=600&auto=format&fit=crop" alt="Design" className="card-bg-image" />
               <div className="card-overlay"></div>
               <div className="service-card-content">
                   <div className="service-icon">
@@ -480,7 +474,7 @@ export default function Portfolio() {
               className="service-card animate-on-scroll" 
               onClick={() => setActiveServicePage('video')}
             >
-              <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1000&auto=format&fit=crop" alt="Video" className="card-bg-image" />
+              <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=600&auto=format&fit=crop" alt="Video" className="card-bg-image" />
               <div className="card-overlay"></div>
               <div className="service-card-content">
                   <div className="service-icon">
@@ -499,7 +493,7 @@ export default function Portfolio() {
               className="service-card animate-on-scroll" 
               onClick={() => setActiveServicePage('web')}
             >
-              <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1000&auto=format&fit=crop" alt="Web" className="card-bg-image" />
+              <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=600&auto=format&fit=crop" alt="Web" className="card-bg-image" />
               <div className="card-overlay"></div>
               <div className="service-card-content">
                   <div className="service-icon">
