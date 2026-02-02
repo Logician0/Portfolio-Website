@@ -5,16 +5,11 @@ import { Camera, Code, Film, Play, Pause, Volume2, Maximize, X, ChevronLeft, Che
 const useModalHistory = (isOpen, onClose) => {
   useEffect(() => {
     if (isOpen) {
-      // Push a new state when modal opens
       window.history.pushState({ modalOpen: true }, '');
-      
       const handlePopState = () => {
-        // If back button is pressed, close modal
         onClose();
       };
-
       window.addEventListener('popstate', handlePopState);
-
       return () => {
         window.removeEventListener('popstate', handlePopState);
       };
@@ -24,7 +19,7 @@ const useModalHistory = (isOpen, onClose) => {
 
 // Service Page Component
 const ServicePage = ({ isOpen, onClose, service, onCategoryClick }) => {
-  useModalHistory(isOpen, onClose); // Attach back button logic
+  useModalHistory(isOpen, onClose);
 
   useEffect(() => {
     if (isOpen) {
@@ -39,24 +34,25 @@ const ServicePage = ({ isOpen, onClose, service, onCategoryClick }) => {
 
   if (!isOpen) return null;
 
+  // Added placeholder images for categories
   const serviceCategories = {
     design: [
-      { id: 'posts', title: 'Posts', description: 'Engaging social media posts', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
-      { id: 'thumbnails', title: 'Thumbnails', description: 'Eye-catching video thumbnails', gradient: 'linear-gradient(135deg, #000000 0%, #2c2c2c 100%)' }
+      { id: 'posts', title: 'Posts', description: 'Social media posts', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
+      { id: 'thumbnails', title: 'Thumbnails', description: 'Video thumbnails', image: 'https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #2c2c2c 100%)' }
     ],
     video: [
-      { id: 'shorts', title: 'Shorts & Reels', description: 'Vertical format videos', gradient: 'linear-gradient(135deg, #111111 0%, #444444 100%)' },
-      { id: 'promos', title: 'Promos', description: 'Product & brand videos', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
-      { id: 'podcasts', title: 'Podcasts', description: 'Episode editing & production', gradient: 'linear-gradient(135deg, #000000 0%, #333333 100%)' },
-      { id: 'ai', title: 'AI Videos', description: 'AI-generated content', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #383838 100%)' },
-      { id: 'cinematic', title: 'Cinematic', description: 'High-end cinematic pieces', gradient: 'linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%)' },
-      { id: 'travel', title: 'Travel Videos', description: 'Destination vlogs', gradient: 'linear-gradient(135deg, #111111 0%, #2d2d2d 100%)' }
+      { id: 'shorts', title: 'Shorts & Reels', description: 'Vertical videos', image: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111111 0%, #444444 100%)' },
+      { id: 'promos', title: 'Promos', description: 'Brand videos', image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
+      { id: 'podcasts', title: 'Podcasts', description: 'Episode editing', image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #333333 100%)' },
+      { id: 'ai', title: 'AI Videos', description: 'AI content', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #383838 100%)' },
+      { id: 'cinematic', title: 'Cinematic', description: 'High-end edits', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #0a0a0a 0%, #2a2a2a 100%)' },
+      { id: 'travel', title: 'Travel Videos', description: 'Vlogs', image: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111111 0%, #2d2d2d 100%)' }
     ],
     web: [
-      { id: 'ecommerce', title: 'E-commerce', description: 'Online stores & platforms', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
-      { id: 'saas', title: 'SaaS', description: 'Web applications & dashboards', gradient: 'linear-gradient(135deg, #000000 0%, #222222 100%)' },
-      { id: 'portfolio', title: 'Portfolio Sites', description: 'Personal & creative portfolios', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #4a4a4a 100%)' },
-      { id: 'agency', title: 'Agency Websites', description: 'Corporate & business sites', gradient: 'linear-gradient(135deg, #0f0f0f 0%, #3a3a3a 100%)' }
+      { id: 'ecommerce', title: 'E-commerce', description: 'Online stores', image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #333333 100%)' },
+      { id: 'saas', title: 'SaaS', description: 'Web apps', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000000 0%, #222222 100%)' },
+      { id: 'portfolio', title: 'Portfolios', description: 'Personal sites', image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1c1c1c 0%, #4a4a4a 100%)' },
+      { id: 'agency', title: 'Agency', description: 'Business sites', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #0f0f0f 0%, #3a3a3a 100%)' }
     ]
   };
 
@@ -83,11 +79,11 @@ const ServicePage = ({ isOpen, onClose, service, onCategoryClick }) => {
               key={category.id}
               className="category-card"
               style={{ 
-                background: category.gradient,
                 animationDelay: `${idx * 0.1}s`
               }}
               onClick={() => onCategoryClick(category.id)}
             >
+              <img src={category.image} alt={category.title} className="card-bg-image" />
               <div className="category-card-overlay"></div>
               <div className="category-card-content">
                 <h3>{category.title}</h3>
@@ -126,8 +122,9 @@ const GalleryModal = ({ isOpen, onClose, images, title }) => {
               className="gallery-item"
               onClick={() => setSelectedImage(img)}
             >
-              <div className="gallery-image" style={{ background: img.gradient }}>
-                <div className="gallery-overlay">
+              <div className="gallery-image-wrapper">
+                 <img src={img.image} alt={img.title} className="gallery-img-tag" />
+                 <div className="gallery-overlay">
                   <ZoomIn size={32} />
                   <span>{img.title}</span>
                 </div>
@@ -143,8 +140,8 @@ const GalleryModal = ({ isOpen, onClose, images, title }) => {
             <X size={32} />
           </button>
           <div className="lightbox-content" onClick={e => e.stopPropagation()}>
-            <div className="lightbox-image" style={{ background: selectedImage.gradient }}>
-              <h3>{selectedImage.title}</h3>
+            <div className="lightbox-image">
+              <img src={selectedImage.image} alt={selectedImage.title} style={{maxWidth: '100%', maxHeight: '100%'}} />
             </div>
           </div>
         </div>
@@ -194,7 +191,8 @@ const VideoModal = ({ isOpen, onClose, videos, category }) => {
   if (!isOpen) return null;
 
   const currentVideo = videos[currentIndex];
-  const isShorts = category === 'Shorts';
+  // Auto-detect Shorts based on category name
+  const isShorts = category && (category.includes('Shorts') || category.includes('Reels'));
 
   return (
     <div className="modal-overlay video-modal-overlay" onClick={onClose}>
@@ -204,7 +202,7 @@ const VideoModal = ({ isOpen, onClose, videos, category }) => {
         </button>
         
         <div className="video-player-section">
-          {/* Added logic for Shorts vs Standard */}
+          {/* Shorts detection applied here */}
           <div className={`video-player-container ${isShorts ? 'shorts-mode' : ''}`}>
             {isPlaying && currentVideo.youtubeId ? (
               <div className="video-iframe-wrapper">
@@ -320,20 +318,21 @@ export default function Portfolio() {
     return () => observer.disconnect();
   }, []);
 
+  // Added placeholder images for gallery items
   const postsImages = [
-    { title: 'Brand Identity', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
-    { title: 'Social Campaign', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
-    { title: 'Product Launch', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
-    { title: 'Event Graphics', gradient: 'linear-gradient(135deg, #050505 0%, #1f1f1f 100%)' },
-    { title: 'Digital Marketing', gradient: 'linear-gradient(135deg, #222 0%, #444 100%)' },
-    { title: 'UI Design', gradient: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }
+    { title: 'Brand Identity', image: 'https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
+    { title: 'Social Campaign', image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
+    { title: 'Product Launch', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #404040 100%)' },
+    { title: 'Event Graphics', image: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #050505 0%, #1f1f1f 100%)' },
+    { title: 'Digital Marketing', image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #222 0%, #444 100%)' },
+    { title: 'UI Design', image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }
   ];
 
   const thumbnailImages = [
-    { title: 'YouTube Thumbnail', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
-    { title: 'Video Cover', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
-    { title: 'Podcast Art', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #444 100%)' },
-    { title: 'Stream Graphics', gradient: 'linear-gradient(135deg, #050505 0%, #2a2a2a 100%)' }
+    { title: 'YouTube Thumbnail', image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #111 0%, #333 100%)' },
+    { title: 'Video Cover', image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #000 0%, #222 100%)' },
+    { title: 'Podcast Art', image: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #444 100%)' },
+    { title: 'Stream Graphics', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1000&auto=format&fit=crop', gradient: 'linear-gradient(135deg, #050505 0%, #2a2a2a 100%)' }
   ];
 
   const videoCategories = {
@@ -461,14 +460,19 @@ export default function Portfolio() {
               className="service-card animate-on-scroll" 
               onClick={() => setActiveServicePage('design')}
             >
-              <div className="service-icon">
-                <Camera size={28} />
-              </div>
-              <h3>Posts & Thumbnails</h3>
-              <p>Eye-catching visuals that stop the scroll and demand attention</p>
-              <div className="service-card-cta">
-                <span>Explore Gallery</span>
-                <ArrowRight size={16} />
+              {/* Added Image Background */}
+              <img src="https://images.unsplash.com/photo-1626785774573-4b799312c95d?q=80&w=1000&auto=format&fit=crop" alt="Design" className="card-bg-image" />
+              <div className="card-overlay"></div>
+              <div className="service-card-content">
+                  <div className="service-icon">
+                    <Camera size={28} />
+                  </div>
+                  <h3>Posts & Thumbnails</h3>
+                  <p>Eye-catching visuals that stop the scroll and demand attention</p>
+                  <div className="service-card-cta">
+                    <span>Explore Gallery</span>
+                    <ArrowRight size={16} />
+                  </div>
               </div>
             </div>
 
@@ -476,14 +480,18 @@ export default function Portfolio() {
               className="service-card animate-on-scroll" 
               onClick={() => setActiveServicePage('video')}
             >
-              <div className="service-icon">
-                <Film size={28} />
-              </div>
-              <h3>Video Editing</h3>
-              <p>Cinematic storytelling that captivates and converts audiences</p>
-              <div className="service-card-cta">
-                <span>Watch Showreels</span>
-                <ArrowRight size={16} />
+              <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=1000&auto=format&fit=crop" alt="Video" className="card-bg-image" />
+              <div className="card-overlay"></div>
+              <div className="service-card-content">
+                  <div className="service-icon">
+                    <Film size={28} />
+                  </div>
+                  <h3>Video Editing</h3>
+                  <p>Cinematic storytelling that captivates and converts audiences</p>
+                  <div className="service-card-cta">
+                    <span>Watch Showreels</span>
+                    <ArrowRight size={16} />
+                  </div>
               </div>
             </div>
 
@@ -491,14 +499,18 @@ export default function Portfolio() {
               className="service-card animate-on-scroll" 
               onClick={() => setActiveServicePage('web')}
             >
-              <div className="service-icon">
-                <Code size={28} />
-              </div>
-              <h3>Website Development</h3>
-              <p>Lightning-fast, conversion-optimized websites that scale</p>
-              <div className="service-card-cta">
-                <span>View Projects</span>
-                <ArrowRight size={16} />
+              <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1000&auto=format&fit=crop" alt="Web" className="card-bg-image" />
+              <div className="card-overlay"></div>
+              <div className="service-card-content">
+                  <div className="service-icon">
+                    <Code size={28} />
+                  </div>
+                  <h3>Website Development</h3>
+                  <p>Lightning-fast, conversion-optimized websites that scale</p>
+                  <div className="service-card-cta">
+                    <span>View Projects</span>
+                    <ArrowRight size={16} />
+                  </div>
               </div>
             </div>
           </div>
@@ -1021,6 +1033,50 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
           text-align: center;
           position: relative;
           overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .card-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.5;
+            transition: opacity 0.5s ease;
+        }
+        
+        .service-card:hover .card-bg-image {
+            opacity: 0.3;
+        }
+        
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1;
+            transition: background 0.3s ease;
+        }
+        
+        .service-card:hover .card-overlay {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .service-card-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .service-card:hover {
@@ -1053,10 +1109,11 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
           margin-bottom: 1rem;
           font-weight: 700;
           letter-spacing: -0.01em;
+          color: #fff; /* Ensure white text over image */
         }
 
         .service-card p {
-          color: var(--text-secondary);
+          color: rgba(255,255,255,0.8);
           margin-bottom: 2rem;
           font-size: 1rem;
           line-height: 1.6;
@@ -1066,7 +1123,7 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          color: var(--text-primary);
+          color: #fff;
           font-weight: 600;
           font-size: 0.9rem;
           opacity: 0.8;
@@ -1498,7 +1555,7 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
           left: 0;
           width: 100%;
           height: 100%;
-          background: linear-gradient(180deg, transparent 20%, rgba(0, 0, 0, 0.7) 100%);
+          background: linear-gradient(180deg, transparent 20%, rgba(0, 0, 0, 0.9) 100%);
           z-index: 0;
         }
 
@@ -1575,22 +1632,28 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
           transition: all 0.4s ease;
           border-radius: 16px;
         }
+        
+        .gallery-image-wrapper {
+           position: absolute;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+        }
+        
+        .gallery-img-tag {
+           width: 100%;
+           height: 100%;
+           object-fit: cover;
+           transition: transform 0.6s ease;
+        }
 
         .gallery-item:hover {
           transform: scale(1.02);
           box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-
-        .gallery-image {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          transition: transform 0.6s ease;
-        }
         
-        .gallery-item:hover .gallery-image {
+        .gallery-item:hover .gallery-img-tag {
             transform: scale(1.1);
         }
 
@@ -1644,17 +1707,10 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
           max-width: 90vw;
           max-height: 90vh;
           width: 100%;
-          aspect-ratio: 16/9;
           display: flex;
           align-items: center;
           justify-content: center;
           border-radius: 8px;
-        }
-
-        .lightbox-image h3 {
-          color: white;
-          font-size: 2rem;
-          font-weight: 600;
         }
 
         .video-modal-overlay {
@@ -1976,19 +2032,20 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
 
           /* HEADER FIX: Thinner, Single Line */
           .nav {
-            padding: 0.75rem 1.5rem; /* Reduced padding */
+            padding: 0.75rem 1.5rem; 
           }
           .logo-main {
              font-size: 1.1rem;
-             white-space: nowrap; /* Forces single line */
+             white-space: nowrap; 
           }
           .logo-img {
              height: 32px;
           }
 
+          /* HERO SPACE FIX: More top padding */
           .hero {
              min-height: auto;
-             padding: 6rem 1.5rem 3rem;
+             padding: 10rem 1.5rem 4rem; /* Increased top padding */
           }
           .hero-title {
              font-size: 2.5rem;
@@ -2019,47 +2076,78 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
             display: block;
           }
 
+          /* SERVICES GRID FIX: 2 Columns */
           .services-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr; /* Force 2 cols */
+            gap: 1rem;
           }
           
           .service-card {
-            padding: 1.5rem;
+            padding: 1.5rem 1rem; /* Smaller padding */
+            min-height: 180px;
+          }
+          
+          .service-card h3 {
+             font-size: 1.1rem; /* Smaller font */
+          }
+          .service-card p {
+             font-size: 0.85rem;
+             margin-bottom: 1rem;
+             display: none; /* Hide description on mobile to save space if needed, or keep small */
+          }
+          .service-icon {
+             width: 48px;
+             height: 48px;
+             margin-bottom: 1rem;
           }
 
-          /* PROCESS FIX: Vertical Stack, Compact, No Scroll */
+          /* CATEGORY CARDS GRID FIX: 2 Columns */
+          .category-cards-grid {
+             grid-template-columns: 1fr 1fr; /* Force 2 cols */
+             gap: 1rem;
+          }
+          .category-card {
+             min-height: 160px;
+             padding: 1.5rem 1rem;
+          }
+          .category-card h3 {
+             font-size: 1.1rem;
+          }
+          .category-card p {
+             font-size: 0.8rem;
+          }
+
+          /* PROCESS FIX: Vertical Column, Centered, No Scroll */
           .workflow-timeline {
             display: flex;
             flex-direction: column; /* Vertical stack */
-            gap: 1rem;
+            gap: 1.5rem;
+            align-items: center; /* Center horizontally */
           }
 
           .workflow-step {
-            display: flex; /* Row layout for icon + text */
+            display: flex; 
+            flex-direction: column; /* Icon above text */
             align-items: center;
-            gap: 1rem;
-            text-align: left;
+            justify-content: center;
+            text-align: center;
             margin-bottom: 0;
+            width: 100%;
           }
           
           .step-number {
-             margin: 0;
-             width: 32px; /* Small icon */
-             height: 32px;
-             font-size: 1rem;
-             flex-shrink: 0;
+             margin: 0 0 0.5rem 0; /* Margin bottom */
+             width: 40px; 
+             height: 40px;
+             font-size: 1.1rem;
           }
           
           .workflow-step h3 {
-             font-size: 1rem;
+             font-size: 1.1rem;
              margin: 0;
           }
 
           .gallery-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .category-cards-grid {
             grid-template-columns: 1fr;
           }
 
@@ -2078,43 +2166,38 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
             padding: 1rem 0.5rem;
           }
           
-          /* ABOUT FIX: Side by side (Split) */
+          /* ABOUT FIX: Column, Profile centered, Text below */
           .about-section {
              padding: 3rem 1.5rem;
           }
           .about-grid {
-             display: flex; /* Row layout */
-             flex-direction: row;
-             align-items: flex-start;
-             gap: 1.5rem;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             gap: 2rem;
+             text-align: center;
           }
           .about-image {
-             width: 35%; /* Left side small */
-             flex-shrink: 0;
+             width: 60%; /* Medium size */
+             max-width: 250px;
+             margin: 0 auto;
           }
           .profile-photo {
-             padding-top: 100%; /* Square aspect ratio */
-             border-radius: 12px;
+             padding-top: 100%; /* Square */
+             border-radius: 50%; /* Circle looks better for centered, or keep rounded rect */
           }
           .about-content {
-             width: 65%; /* Right side text */
+             width: 100%;
           }
           .section-title {
-             text-align: left; /* Align title left */
-             margin-bottom: 1rem;
-             font-size: 2rem;
+             text-align: center;
+             margin-bottom: 1.5rem;
           }
           .about-text {
-             font-size: 0.85rem; /* Smaller text */
-             line-height: 1.5;
-             margin-bottom: 0.5rem;
+             font-size: 1rem;
           }
           .skills-highlight {
-             display: none; /* Hide stats on mobile to save space */
-          }
-          .btn-primary {
-             padding: 0.75rem 1.5rem;
-             font-size: 0.9rem;
+             display: none; 
           }
 
           .service-page-content,
@@ -2134,12 +2217,12 @@ If you want a creative partner who’s passionate, detail-driven, and easy to wo
               height: 100vh;
               max-height: 100vh;
               border-radius: 0;
-              justify-content: center; /* Vertical Center */
+              justify-content: center; 
           }
           
           .video-player-section {
-              flex: 0 1 auto; /* Don't stretch */
-              margin: auto 0; /* Vertical center */
+              flex: 0 1 auto; 
+              margin: auto 0; 
           }
         }
       `}</style>
