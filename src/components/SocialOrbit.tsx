@@ -92,42 +92,31 @@ function BreathingIcon({
 export function SocialOrbit() {
   const [iconsVisible, setIconsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const getRadius = () => {
-    if (typeof window === 'undefined') return 135;
-    const width = window.innerWidth;
-    if (width < 640) return 135; 
-    if (width < 768) return 160;
-    if (width < 1024) return 190;
-    return 220;
-  };
-
   const [radius, setRadius] = useState(135);
-  
+
   useEffect(() => {
-    const updateRadius = () => setRadius(getRadius());
-    updateRadius();
-    window.addEventListener('resize', updateRadius);
-    return () => window.removeEventListener('resize', updateRadius);
+    const updateSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      if (width < 640) setRadius(135); 
+      else if (width < 768) setRadius(160);
+      else if (width < 1024) setRadius(190);
+      else setRadius(220);
+    };
+    
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
   }, []);
 
   const iconPositions = getIconPositions(radius);
 
   return (
-    // REDUCED PADDING: py-6 sm:py-10 (was py-10 sm:py-16)
     <section id="about" className="py-6 sm:py-10 md:py-14 bg-black relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950/50 to-black" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
         <motion.div
-          // REDUCED MARGIN: mb-6 (was mb-10)
           className="text-center mb-6"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -144,7 +133,6 @@ export function SocialOrbit() {
         </motion.div>
 
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
-          
           <div className="relative flex-shrink-0">
             <div 
               className="relative flex items-center justify-center"
@@ -154,31 +142,24 @@ export function SocialOrbit() {
               }}
             >
               <AnimatePresence>
-                {iconsVisible && (
-                  <>
-                    {socialIcons.map((social, index) => (
-                      <BreathingIcon
-                        key={social.label}
-                        Icon={social.Icon}
-                        label={social.label}
-                        href={social.href}
-                        position={iconPositions[index]}
-                        index={index}
-                        isVisible={iconsVisible}
-                      />
-                    ))}
-                  </>
-                )}
+                {iconsVisible && socialIcons.map((social, index) => (
+                    <BreathingIcon
+                      key={social.label}
+                      Icon={social.Icon}
+                      label={social.label}
+                      href={social.href}
+                      position={iconPositions[index]}
+                      index={index}
+                      isVisible={iconsVisible}
+                    />
+                ))}
               </AnimatePresence>
 
-              {/* PROFILE BUTTON */}
               <motion.button
                 onClick={() => setIconsVisible(!iconsVisible)}
                 className="relative z-10 rounded-full focus:outline-none group"
                 whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300 }}
               >
-                {/* Glow Shadow */}
                 <motion.div
                   className="absolute -inset-3 rounded-full"
                   animate={{
@@ -186,48 +167,35 @@ export function SocialOrbit() {
                       ? '0 0 50px rgba(6, 182, 212, 0.6)' 
                       : '0 0 0px rgba(6, 182, 212, 0)',   
                   }}
-                  transition={{ duration: 0.3 }}
                 />
-
-                {/* Animated Stroke */}
                 <motion.div
                   className="absolute -inset-0.5 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-cyan-400"
-                  animate={{
-                    opacity: iconsVisible ? 1 : 0, 
-                    scale: iconsVisible ? 1 : 0.98 
-                  }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  animate={{ opacity: iconsVisible ? 1 : 0 }}
                 />
                 
-                {/* Image */}
                 <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full overflow-hidden bg-zinc-900">
                   <img
-                    src="public/my-photo.jpg"
+                    src="/my-photo.jpg" // FIXED: Removed "public/"
                     alt="Founder"
                     className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
+                    loading="eager" // PERFORMANCE: Ensures the profile pic loads immediately
                   />
                 </div>
               </motion.button>
             </div>
 
-            <motion.div
-              className="text-center -mt-16 relative z-20 pointer-events-none" 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="pointer-events-auto inline-block">
+            <div className="text-center -mt-16 relative z-20">
+              <div className="inline-block">
                 <button
                   onClick={() => setIconsVisible(!iconsVisible)}
                   className="text-xs text-cyan-400/80 hover:text-cyan-400 transition-colors uppercase tracking-wider font-medium"
                 >
                   {iconsVisible ? 'Close' : 'Tap to Connect'}
                 </button>
-                <h3 className="text-xl font-bold text-white mt-1">Alex Rivera</h3>
+                <h3 className="text-xl font-bold text-white mt-1">Suraj Kumar</h3>
                 <p className="text-zinc-500 text-sm">Founder & CEO</p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           <motion.div
@@ -243,28 +211,24 @@ export function SocialOrbit() {
             <div className="space-y-4 text-zinc-400 text-sm sm:text-base leading-relaxed">
               <p>
                 At <span className="text-cyan-400 font-medium">Logician Creatives</span>, we transform 
-                visionary ideas into digital masterpieces. With over a decade of experience in AI, 
+                visionary ideas into digital masterpieces. With expertise in AI, 
                 video production, and web development.
               </p>
-              {/* Removed the Philosophy Paragraph here */}
             </div>
 
             <div className="grid grid-cols-3 gap-6 mt-6">
               {[
                 { value: '150+', label: 'Projects' },
                 { value: '50+', label: 'Clients' },
-                { value: '10+', label: 'Years' },
-              ].map((stat, index) => (
+                { value: '5+', label: 'Years' },
+              ].map((stat) => (
                 <div key={stat.label} className="text-center lg:text-left">
-                  <div className="text-2xl sm:text-3xl font-bold text-white">
-                    {stat.value}
-                  </div>
+                  <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>
                   <div className="text-zinc-500 text-xs uppercase tracking-wider mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>
