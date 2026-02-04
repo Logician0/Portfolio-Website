@@ -92,15 +92,20 @@ export function Contact() {
   };
 
   return (
-    // UPDATED: Reduced padding from py-32 to py-10 md:py-32
-    <section id="contact" className="relative py-10 md:py-32 px-6 overflow-hidden">
+    <section 
+      id="contact" 
+      className="relative py-10 md:py-32 px-6 overflow-hidden"
+      style={{ willChange: 'transform' }} // Optimization: GPU acceleration
+    >
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full bg-gradient-to-t from-violet-500/10 via-fuchsia-500/5 to-transparent blur-3xl" />
+        <div 
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full bg-gradient-to-t from-violet-500/10 via-fuchsia-500/5 to-transparent blur-3xl" 
+          style={{ willChange: 'transform, opacity' }} // Optimization: Hardware acceleration for large blurred div
+        />
       </div>
 
       <div className="max-w-7xl mx-auto relative">
-        {/* UPDATED: Adjusted gap for mobile (gap-10 lg:gap-16) */}
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Content Side */}
           <motion.div
@@ -108,6 +113,7 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            style={{ willChange: 'transform, opacity' }} // Optimization: GPU acceleration for motion
           >
             <motion.span 
               className="inline-block px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-zinc-400 mb-6"
@@ -192,10 +198,12 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            style={{ willChange: 'transform, opacity' }} // Optimization: GPU acceleration
           >
             <form
               onSubmit={handleSubmit}
               className="rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-xl p-8"
+              style={{ transform: 'translateZ(0)' }} // Optimization: Triggers GPU for backdrop-blur
             >
               <AnimatePresence mode="wait">
                 {formState.status === 'success' ? (

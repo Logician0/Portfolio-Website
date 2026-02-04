@@ -12,7 +12,7 @@ const generateStars = (count: number, width: number, height: number) => {
     const x = Math.floor(Math.random() * width);
     const y = Math.floor(Math.random() * height);
     const opacity = Math.random();
-    const size = Math.random() > 0.8 ? 2 : 1; 
+    const size = Math.random() > 0.8 ? 2 : 1; // Restored: Original size logic
     boxShadow += `${x}px ${y}px 0 ${size}px rgba(255, 255, 255, ${opacity}), `;
   }
   return boxShadow.slice(0, -2); 
@@ -48,7 +48,7 @@ function MagneticCard({ children, className }: { children: React.ReactNode; clas
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ x: springX, y: springY }}
+      style={{ x: springX, y: springY, willChange: 'transform' }} // Optimization: Hardware acceleration
       className={className}
     >
       {children}
@@ -93,14 +93,14 @@ const services = [
 ];
 
 export function ServicesRound() {
-  const smallStars = useMemo(() => generateStars(1000, 4000, 4000), []);
-  const mediumStars = useMemo(() => generateStars(400, 4000, 4000), []);
-  const bigStars = useMemo(() => generateStars(100, 4000, 4000), []);
+  // Balanced count: Kept the density but reduced the invisible overlap that slows down mobile
+  const smallStars = useMemo(() => generateStars(600, 3000, 3000), []);
+  const mediumStars = useMemo(() => generateStars(250, 3000, 3000), []);
+  const bigStars = useMemo(() => generateStars(80, 3000, 3000), []);
 
   return (
     <section 
       id="services" 
-      // UPDATED: Reduced padding from py-32 to py-20
       className="relative py-12 md:py-20 bg-black flex flex-col items-center justify-center overflow-hidden w-full"
     >
       
@@ -108,14 +108,14 @@ export function ServicesRound() {
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950/30 to-black z-0" />
         
-        {/* STARS */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[4000px] h-[4000px] animate-[spin_240s_linear_infinite]">
+        {/* STARS: Restored the spinning logic exactly as you had it */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[3000px] h-[3000px] animate-[spin_240s_linear_infinite] will-change-transform">
           <div style={{ width: '100%', height: '100%', boxShadow: smallStars, opacity: 0.5 }} />
         </div>
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[4000px] h-[4000px] animate-[spin_180s_linear_infinite_reverse]">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[3000px] h-[3000px] animate-[spin_180s_linear_infinite_reverse] will-change-transform">
           <div style={{ width: '100%', height: '100%', boxShadow: mediumStars, opacity: 0.7 }} />
         </div>
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[4000px] h-[4000px] animate-[spin_120s_linear_infinite]">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[3000px] h-[3000px] animate-[spin_120s_linear_infinite] will-change-transform">
           <div style={{ width: '100%', height: '100%', boxShadow: bigStars, opacity: 1 }} />
         </div>
 
@@ -123,7 +123,6 @@ export function ServicesRound() {
       </div>
 
       {/* --- 2. HEADER --- */}
-      {/* UPDATED: Reduced margin from mb-32 to mb-16 */}
       <div className="relative z-30 text-center px-4 mb-10 md:mb-16">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
@@ -137,8 +136,6 @@ export function ServicesRound() {
       </div>
 
       {/* --- 3. THE SYSTEM --- */}
-      {/* UPDATED: Reduced Desktop size from 800px to 700px.
-          Since cards are anchored to edges, shrinking container pulls them CLOSER to center. */}
       <div className="relative z-10 w-[340px] h-[340px] sm:w-[450px] sm:h-[450px] md:w-[600px] md:h-[600px] lg:w-[700px] lg:h-[700px]">
         
         {/* A. CONNECTING LINES */}
@@ -177,7 +174,7 @@ export function ServicesRound() {
             transition={{ duration: 3, repeat: Infinity }}
             className="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-full bg-white flex items-center justify-center relative z-20"
           >
-             <div className="w-2 h-2 rounded-full bg-black/80 shadow-inner" />
+              <div className="w-2 h-2 rounded-full bg-black/80 shadow-inner" />
           </motion.div>
           <div className="absolute inset-0 rounded-full border border-white/20 animate-ping opacity-30 duration-[2000ms]" />
         </div>
@@ -188,13 +185,13 @@ export function ServicesRound() {
             cyan: 'text-cyan-400 group-hover:text-cyan-300',
             pink: 'text-pink-400 group-hover:text-pink-300',
             violet: 'text-violet-400 group-hover:text-violet-300',
-          }[service.color];
+          }[service.color as 'cyan'|'pink'|'violet'];
 
           const glowColors = {
             cyan: 'group-hover:shadow-[0_0_50px_rgba(6,182,212,0.4)] group-hover:border-cyan-500/60',
             pink: 'group-hover:shadow-[0_0_50px_rgba(236,72,153,0.4)] group-hover:border-pink-500/60',
             violet: 'group-hover:shadow-[0_0_50px_rgba(139,92,246,0.4)] group-hover:border-violet-500/60',
-          }[service.color];
+          }[service.color as 'cyan'|'pink'|'violet'];
 
           return (
             <motion.div
@@ -207,7 +204,7 @@ export function ServicesRound() {
                 ease: "easeInOut", 
                 delay: service.floatDelay 
               }}
-              style={{ willChange: 'transform' }}
+              style={{ willChange: 'transform' }} // Optimization: GPU rendering
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -217,7 +214,6 @@ export function ServicesRound() {
               >
                 <Link to={service.href}>
                   <MagneticCard className="group cursor-pointer">
-                    {/* Size maintained at w-64 h-64 (Big) on Desktop */}
                     <div 
                       className={`
                         w-32 h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 rounded-full 
