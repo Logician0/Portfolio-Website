@@ -1,68 +1,380 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/800.css";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  
+  /* OLED Dark Mode - Oklch Colors */
+  --color-surface: oklch(0.13 0.01 0);
+  --color-surface-elevated: oklch(0.16 0.01 0);
+  --color-border: oklch(0.25 0.01 0);
+  --color-border-subtle: oklch(0.2 0.01 0);
+  
+  /* Primary Accent Colors */
+  --color-primary-violet: oklch(0.65 0.25 290);
+  --color-primary-pink: oklch(0.65 0.25 350);
+  --color-primary-cyan: oklch(0.75 0.15 195);
+  
+  /* Text Colors */
+  --color-text-primary: oklch(0.98 0 0);
+  --color-text-secondary: oklch(0.65 0.01 0);
+  --color-text-muted: oklch(0.45 0.01 0);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+/* ============================================
+   Global Resets & Base Styles
+   ============================================ */
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-a:hover {
-  color: #535bf2;
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #000000 !important;
+  min-height: 100%;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  font-family: var(--font-sans);
+  background: #000000 !important;
+  background-color: #000000 !important;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: default;
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+#root {
+  background-color: #000000;
+  min-height: 100vh;
 }
+
+/* ============================================
+   Aurora Background Animation
+   ============================================ */
+
+@keyframes aurora {
+  0%, 100% {
+    background-position: 0% 50%, 100% 50%, 50% 100%;
+    opacity: 0.4;
+  }
+  25% {
+    background-position: 100% 50%, 0% 100%, 50% 0%;
+    opacity: 0.6;
+  }
+  50% {
+    background-position: 50% 100%, 50% 0%, 0% 50%;
+    opacity: 0.5;
+  }
+  75% {
+    background-position: 0% 100%, 100% 0%, 100% 50%;
+    opacity: 0.7;
+  }
+}
+
+.aurora-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(139, 92, 246, 0.35), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(236, 72, 153, 0.3), transparent),
+    radial-gradient(ellipse 70% 60% at 50% 80%, rgba(34, 211, 238, 0.25), transparent);
+  animation: aurora 20s ease-in-out infinite;
+  filter: blur(80px);
+}
+
+/* ============================================
+   Breathing Glow Effect
+   ============================================ */
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+.breathe {
+  animation: breathe 10s ease-in-out infinite;
+}
+
+/* ============================================
+   Marquee Animations
+   ============================================ */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.marquee {
+  animation: marquee 35s linear infinite;
+}
+
+.marquee-reverse {
+  animation: marquee-reverse 35s linear infinite;
+}
+
+.marquee:hover,
+.marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   Glass Effect
+   ============================================ */
+
+.glass {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================
+   Text Gradient Utility
+   ============================================ */
+
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.75) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   Spotlight Card Effect (CSS Fallback)
+   ============================================ */
+
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.05),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
+/* ============================================
+   Typography Utilities
+   ============================================ */
+
+.tracking-tighter-custom {
+  letter-spacing: -0.03em;
+}
+
+.leading-relaxed-custom {
+  line-height: 1.7;
+}
+
+/* ============================================
+   Focus & Selection Styles
+   ============================================ */
+
+::selection {
+  background: rgba(139, 92, 246, 0.4);
+  color: #ffffff;
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(139, 92, 246, 0.6);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   Image Loading Effect
+   ============================================ */
+
+.img-loading {
+  filter: blur(20px);
+  transform: scale(1.05);
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.img-loaded {
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* ============================================
+   Line Clamp Utilities
+   ============================================ */
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================
+   Photon Light Beam Animation
+   ============================================ */
+
+@keyframes photon-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px 8px rgba(34, 211, 238, 0.6);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 30px 12px rgba(34, 211, 238, 0.8);
+    opacity: 1;
+  }
+}
+
+.photon-glow {
+  animation: photon-glow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Custom Scrollbar (Optional, for overflow areas)
+   ============================================ */
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   Button Reset
+   ============================================ */
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  cursor: default;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+/* ============================================
+   Form Input Styles
+   ============================================ */
+
+input, textarea {
+  cursor: text;
+}
+
+select {
+  cursor: default;
+}
+
+/* ============================================
+   Aspect Ratio Utilities
+   ============================================ */
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+/* ============================================
+   Animation Utilities
+   ============================================ */
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 0.6;
   }
-  a:hover {
-    color: #747bff;
+  50% {
+    opacity: 1;
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
   }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* ============================================
+   No Scrollbar Utility
+   ============================================ */
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
