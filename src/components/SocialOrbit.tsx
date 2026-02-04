@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Youtube, Twitter, Instagram, Linkedin, Github } from 'lucide-react';
 
@@ -37,19 +37,6 @@ function BreathingIcon({
   index: number;
   isVisible: boolean;
 }) {
-  const [microOffset, setMicroOffset] = useState({ x: 0, y: 0 });
-  
-  useEffect(() => {
-    if (!isVisible) return;
-    const interval = setInterval(() => {
-      setMicroOffset({
-        x: (Math.random() - 0.5) * 6,
-        y: (Math.random() - 0.5) * 6,
-      });
-    }, 2500 + index * 300);
-    return () => clearInterval(interval);
-  }, [isVisible, index]);
-
   return (
     <motion.a
       href={href}
@@ -61,17 +48,22 @@ function BreathingIcon({
         top: '50%',
         x: '-50%', 
         y: '-50%',
+        willChange: 'transform', // Optimization: Forces GPU layer
       }}
-      initial={{ x: '-50%', y: '-50%', scale: 0, opacity: 0 }} 
-      animate={{ 
-        x: `calc(-50% + ${position.x + microOffset.x}px)`, 
-        y: `calc(-50% + ${position.y + microOffset.y}px)`,
+      initial={{ scale: 0, opacity: 0 }} 
+      animate={isVisible ? { 
+        // We replaced state updates with a pure CSS-driven drift
+        x: [`calc(-50% + ${position.x}px)`, `calc(-50% + ${position.x + 4}px)`, `calc(-50% + ${position.x - 2}px)`, `calc(-50% + ${position.x}px)`],
+        y: [`calc(-50% + ${position.y}px)`, `calc(-50% + ${position.y - 3}px)`, `calc(-50% + ${position.y + 2}px)`, `calc(-50% + ${position.y}px)`],
         scale: 1,
         opacity: 1,
-      }}
-      exit={{ x: '-50%', y: '-50%', scale: 0, opacity: 0 }}
+      } : {}}
+      exit={{ scale: 0, opacity: 0 }}
       transition={{
-        type: 'spring', stiffness: 120, damping: 14, delay: index * 0.05
+        x: { duration: 5 + index, repeat: Infinity, ease: "easeInOut" },
+        y: { duration: 4 + index, repeat: Infinity, ease: "easeInOut" },
+        scale: { type: 'spring', stiffness: 120, damping: 14, delay: index * 0.05 },
+        opacity: { duration: 0.2 }
       }}
       onClick={(e) => e.stopPropagation()}
     >
@@ -79,7 +71,7 @@ function BreathingIcon({
         className="w-full h-full flex items-center justify-center rounded-full bg-black/80 border border-cyan-500/40 shadow-lg"
         animate={{ scale: [0.95, 1.05, 0.95] }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: index * 0.5 }}
-        style={{ boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)' }}
+        style={{ boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)', willChange: 'transform' }}
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/10" />
         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 relative z-10" />
@@ -109,7 +101,8 @@ export function SocialOrbit() {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  const iconPositions = getIconPositions(radius);
+  // Optimization: Memoize positions so they don't recalculate on every small render
+  const iconPositions = useMemo(() => getIconPositions(radius), [radius]);
 
   return (
     <section id="about" className="py-6 sm:py-10 md:py-14 bg-black relative overflow-hidden">
@@ -167,6 +160,7 @@ export function SocialOrbit() {
                       ? '0 0 50px rgba(6, 182, 212, 0.6)' 
                       : '0 0 0px rgba(6, 182, 212, 0)',   
                   }}
+                  transition={{ duration: 0.3 }}
                 />
                 <motion.div
                   className="absolute -inset-0.5 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-cyan-400"
@@ -175,10 +169,10 @@ export function SocialOrbit() {
                 
                 <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full overflow-hidden bg-zinc-900">
                   <img
-                    src="/my-photo.jpg" // FIXED: Removed "public/"
+                    src="/my-photo.jpg" 
                     alt="Founder"
                     className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
-                    loading="eager" // PERFORMANCE: Ensures the profile pic loads immediately
+                    loading="eager"
                   />
                 </div>
               </motion.button>

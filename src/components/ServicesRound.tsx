@@ -1,22 +1,9 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
+import { useRef } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 import { Bot, Film, Code2, ArrowRight } from 'lucide-react';
 import { Link } from '@/lib/router';
-
-// --- STAR GENERATOR ---
-const generateStars = (count: number, width: number, height: number) => {
-  let boxShadow = '';
-  for (let i = 0; i < count; i++) {
-    const x = Math.floor(Math.random() * width);
-    const y = Math.floor(Math.random() * height);
-    const opacity = Math.random();
-    const size = Math.random() > 0.8 ? 2 : 1; // Restored: Original size logic
-    boxShadow += `${x}px ${y}px 0 ${size}px rgba(255, 255, 255, ${opacity}), `;
-  }
-  return boxShadow.slice(0, -2); 
-};
 
 // --- MAGNETIC CARD COMPONENT ---
 function MagneticCard({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -48,7 +35,7 @@ function MagneticCard({ children, className }: { children: React.ReactNode; clas
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ x: springX, y: springY, willChange: 'transform' }} // Optimization: Hardware acceleration
+      style={{ x: springX, y: springY, willChange: 'transform' }}
       className={className}
     >
       {children}
@@ -93,32 +80,14 @@ const services = [
 ];
 
 export function ServicesRound() {
-  // Balanced count: Kept the density but reduced the invisible overlap that slows down mobile
-  const smallStars = useMemo(() => generateStars(600, 3000, 3000), []);
-  const mediumStars = useMemo(() => generateStars(250, 3000, 3000), []);
-  const bigStars = useMemo(() => generateStars(80, 3000, 3000), []);
-
   return (
     <section 
       id="services" 
       className="relative py-12 md:py-20 bg-black flex flex-col items-center justify-center overflow-hidden w-full"
     >
-      
-      {/* --- 1. BACKGROUND --- */}
+      {/* --- 1. BACKGROUND (Stars Removed) --- */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950/30 to-black z-0" />
-        
-        {/* STARS: Restored the spinning logic exactly as you had it */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[3000px] h-[3000px] animate-[spin_240s_linear_infinite] will-change-transform">
-          <div style={{ width: '100%', height: '100%', boxShadow: smallStars, opacity: 0.5 }} />
-        </div>
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[3000px] h-[3000px] animate-[spin_180s_linear_infinite_reverse] will-change-transform">
-          <div style={{ width: '100%', height: '100%', boxShadow: mediumStars, opacity: 0.7 }} />
-        </div>
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[3000px] h-[3000px] animate-[spin_120s_linear_infinite] will-change-transform">
-          <div style={{ width: '100%', height: '100%', boxShadow: bigStars, opacity: 1 }} />
-        </div>
-
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(76,29,149,0.1),transparent_70%)]" />
       </div>
 
@@ -204,7 +173,7 @@ export function ServicesRound() {
                 ease: "easeInOut", 
                 delay: service.floatDelay 
               }}
-              style={{ willChange: 'transform' }} // Optimization: GPU rendering
+              style={{ willChange: 'transform' }}
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -245,7 +214,6 @@ export function ServicesRound() {
             </motion.div>
           );
         })}
-
       </div>
     </section>
   );
