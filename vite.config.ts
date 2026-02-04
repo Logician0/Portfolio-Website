@@ -3,36 +3,23 @@ import { fileURLToPath } from "url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-// ❌ REMOVED: vite-plugin-singlefile (This was causing the slow loading)
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  plugins: [
-    react(), 
-    tailwindcss(),
-    // We removed singleFile to allow "Code Splitting"
-  ],
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
   },
   build: {
-    // ✅ 1. Enable modern JS targeting for smaller bundles
-    target: 'esnext',
-    // ✅ 2. Minify with Terser for the smallest possible code size
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // Removes console.logs for production
-        drop_debugger: true,
-      },
-    },
-    // ✅ 3. Advanced Chunking (Split heavy libraries)
+    target: 'esnext', // Use modern JS for smaller files
+    minify: 'esbuild', // Use the built-in fast minifier
     rollupOptions: {
       output: {
+        // This splits the code into smaller pieces for parallel loading
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-motion': ['framer-motion'],
@@ -40,7 +27,5 @@ export default defineConfig({
         },
       },
     },
-    // ✅ 4. Increase chunk size limit to avoid warnings
-    chunkSizeWarningLimit: 1000,
   },
 });
