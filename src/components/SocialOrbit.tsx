@@ -42,17 +42,18 @@ function BreathingIcon({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      // ✅ ACCESSIBILITY: Explicit label for screen readers
+      aria-label={`Follow us on ${label}`}
       className="absolute z-0 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full cursor-pointer"
       style={{
         left: '50%',
         top: '50%',
         x: '-50%', 
         y: '-50%',
-        willChange: 'transform', // Optimization: Forces GPU layer
+        willChange: 'transform',
       }}
       initial={{ scale: 0, opacity: 0 }} 
       animate={isVisible ? { 
-        // We replaced state updates with a pure CSS-driven drift
         x: [`calc(-50% + ${position.x}px)`, `calc(-50% + ${position.x + 4}px)`, `calc(-50% + ${position.x - 2}px)`, `calc(-50% + ${position.x}px)`],
         y: [`calc(-50% + ${position.y}px)`, `calc(-50% + ${position.y - 3}px)`, `calc(-50% + ${position.y + 2}px)`, `calc(-50% + ${position.y}px)`],
         scale: 1,
@@ -101,7 +102,6 @@ export function SocialOrbit() {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
-  // Optimization: Memoize positions so they don't recalculate on every small render
   const iconPositions = useMemo(() => getIconPositions(radius), [radius]);
 
   return (
@@ -120,7 +120,8 @@ export function SocialOrbit() {
               About Us
             </span>
           </h2>
-          <p className="text-zinc-500 text-xs sm:text-sm">
+          {/* ✅ CONTRAST FIX: Increased from zinc-500 to zinc-300 */}
+          <p className="text-zinc-300 text-xs sm:text-sm">
             The creative minds behind your digital success
           </p>
         </motion.div>
@@ -150,6 +151,9 @@ export function SocialOrbit() {
 
               <motion.button
                 onClick={() => setIconsVisible(!iconsVisible)}
+                // ✅ ACCESSIBILITY: Expanded state and descriptive label
+                aria-expanded={iconsVisible}
+                aria-label={iconsVisible ? "Close social connections" : "Open social connections"}
                 className="relative z-10 rounded-full focus:outline-none group"
                 whileTap={{ scale: 0.98 }}
               >
@@ -170,7 +174,7 @@ export function SocialOrbit() {
                 <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full overflow-hidden bg-zinc-900">
                   <img
                     src="/my-photo.jpg" 
-                    alt="Founder"
+                    alt="Suraj Kumar - Founder & CEO"
                     className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
                     loading="eager"
                   />
@@ -187,7 +191,8 @@ export function SocialOrbit() {
                   {iconsVisible ? 'Close' : 'Tap to Connect'}
                 </button>
                 <h3 className="text-xl font-bold text-white mt-1">Suraj Kumar</h3>
-                <p className="text-zinc-500 text-sm">Founder & CEO</p>
+                {/* ✅ CONTRAST FIX: Increased from zinc-500 to zinc-400 */}
+                <p className="text-zinc-400 text-sm">Founder & CEO</p>
               </div>
             </div>
           </div>
@@ -202,7 +207,7 @@ export function SocialOrbit() {
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
               Crafting Digital Excellence
             </h3>
-            <div className="space-y-4 text-zinc-400 text-sm sm:text-base leading-relaxed">
+            <div className="space-y-4 text-zinc-300 text-sm sm:text-base leading-relaxed">
               <p>
                 At <span className="text-cyan-400 font-medium">Logician Creatives</span>, we transform 
                 visionary ideas into digital masterpieces. With expertise in AI, 
@@ -218,7 +223,8 @@ export function SocialOrbit() {
               ].map((stat) => (
                 <div key={stat.label} className="text-center lg:text-left">
                   <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>
-                  <div className="text-zinc-500 text-xs uppercase tracking-wider mt-1">{stat.label}</div>
+                  {/* ✅ CONTRAST FIX: Increased from zinc-500 to zinc-400 */}
+                  <div className="text-zinc-400 text-xs uppercase tracking-wider mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
