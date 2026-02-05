@@ -16,7 +16,7 @@ export function Newsletter() {
     setStatus('loading');
     
     // ✅ Restored the Real Backend Logic
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6kyFDZmdouIC-6TcsHsozCxWJFNn15Xf2KvY7vBqVfxhTuoKZmzURrBSvxWQILh_A/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTeaVRbmbLLXNg8yRzb-ayEN8Ex6hX9DSIbWSmJUHIRZbba6Rl1CJ3NtcDhuxBTzI/exec";
 
     try {
       await fetch(SCRIPT_URL, {
