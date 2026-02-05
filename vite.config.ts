@@ -15,16 +15,24 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'esnext', // Use modern JS for smaller files
-    minify: 'esbuild', // Use the built-in fast minifier
+    target: 'esnext',
+    minify: 'esbuild',
+    // ✅ 1. CSS Code Splitting: Reduces initial CSS payload
+    cssCodeSplit: true,
+    // ✅ 2. Clean up assets to prevent ghost files in production
+    emptyOutDir: true,
     rollupOptions: {
       output: {
-        // This splits the code into smaller pieces for parallel loading
+        // ✅ 3. Improved Chunking: Keeps the main bundle tiny
         manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-motion': ['framer-motion'],
-          'vendor-icons': ['lucide-react'],
+          'react-vendor': ['react', 'react-dom'],
+          'framer-vendor': ['framer-motion'],
+          'icons-vendor': ['lucide-react'],
         },
+        // ✅ 4. Entry/Chunk Naming: Better for browser caching
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
   },
