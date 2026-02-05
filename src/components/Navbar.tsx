@@ -64,7 +64,6 @@ export function Navbar() {
         )}
         initial={{ y: 0 }}
         animate={{ y: 0 }}
-        // ✅ PERFORMANCE: Pre-hint for GPU rendering during transitions
         style={{ willChange: 'transform' }}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between" aria-label="Main Navigation">
@@ -72,7 +71,6 @@ export function Navbar() {
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group" aria-label="Logician Creatives Home">
             <motion.img
               src="/logo.png"
-              // ✅ ACCESSIBILITY: Descriptive alt tag
               alt="Logician Creatives Agency Logo"
               className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
               whileHover={{ scale: 1.05 }}
@@ -99,7 +97,6 @@ export function Navbar() {
                     onMouseLeave={() => setIsServicesOpen(false)}
                   >
                     <button
-                      // ✅ ACCESSIBILITY: Dropdown state indicators
                       aria-haspopup="true"
                       aria-expanded={isServicesOpen}
                       aria-label="Services menu"
@@ -167,7 +164,6 @@ export function Navbar() {
                   <a
                     href={isServicePage ? `#/${item.href}` : item.href}
                     onClick={() => handleNavClick(item.href)}
-                    // ✅ CONTRAST: zinc-400 -> zinc-300
                     className="text-sm text-zinc-300 hover:text-white transition-colors relative group py-2"
                   >
                     {item.label}
@@ -181,7 +177,6 @@ export function Navbar() {
           <a
             href={isServicePage ? '#/' : '#contact'}
             onClick={() => handleNavClick('#contact')}
-            // ✅ ACCESSIBILITY: Explicit role for the CTA
             aria-label="Start a new project"
             className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-zinc-200 transition-colors transform hover:scale-105 active:scale-95 duration-200"
           >
@@ -190,7 +185,6 @@ export function Navbar() {
           </a>
 
           <button
-            // ✅ ACCESSIBILITY: Descriptive mobile menu label and state
             className="md:hidden p-2 text-white"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-expanded={isMobileOpen}
@@ -204,33 +198,37 @@ export function Navbar() {
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-black/98 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-40 bg-black/98 backdrop-blur-xl md:hidden overflow-y-auto" // ✅ FIXED: Added overflow-y-auto for safety
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             aria-modal="true"
             role="dialog"
           >
-            <div className="flex flex-col items-center justify-center h-full gap-6 pt-20">
-              <div className="text-center mb-4">
-                <p className="text-zinc-400 text-sm mb-4">Our Services</p>
-                <div className="flex flex-col gap-3">
+            {/* ✅ FIXED: Changed 'justify-center' to 'justify-start' and adjusted 'pt' to reduce scrolling */}
+            <div className="flex flex-col items-center justify-start h-full gap-5 pt-24 pb-10 px-4">
+              
+              {/* Services Section - Made Compact */}
+              <div className="text-center w-full max-w-xs">
+                <p className="text-zinc-500 text-xs uppercase tracking-widest mb-3 font-bold">Our Services</p>
+                <div className="flex flex-col gap-2"> {/* Reduced gap from 3 to 2 */}
                   {services.map((service, i) => {
                     const Icon = iconMap[service.icon] || Bot;
                     return (
                       <motion.div
                         key={service.slug}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.1 }}
+                        transition={{ delay: i * 0.05 }} // Faster stagger
                       >
                         <Link
                           to={`/services/${service.slug}`}
                           onClick={() => setIsMobileOpen(false)}
-                          className="flex items-center gap-3 px-6 py-3 rounded-xl bg-white/5 border border-white/10"
+                          // ✅ FIXED: Reduced padding (py-3 -> py-2.5) to save space
+                          className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 active:bg-white/10 transition-colors"
                         >
-                          <Icon className="w-5 h-5 text-white" aria-hidden="true" />
-                          <span className="text-lg text-white">{service.title}</span>
+                          <Icon className="w-4 h-4 text-zinc-300" aria-hidden="true" />
+                          <span className="text-base text-zinc-200">{service.title}</span>
                         </Link>
                       </motion.div>
                     );
@@ -238,22 +236,27 @@ export function Navbar() {
                 </div>
               </div>
 
-              {navItems.filter(item => !item.hasDropdown).map((item, i) => (
-                <motion.a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => {
-                    setIsMobileOpen(false);
-                    handleNavClick(item.href);
-                  }}
-                  className="text-2xl font-semibold text-white"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: (i + 3) * 0.1 }}
-                >
-                  {item.label}
-                </motion.a>
-              ))}
+              <div className="w-full h-px bg-white/5 my-1" /> {/* Separator Line */}
+
+              {/* Main Links - Closer to the top now */}
+              <div className="flex flex-col gap-4 text-center">
+                {navItems.filter(item => !item.hasDropdown).map((item, i) => (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => {
+                      setIsMobileOpen(false);
+                      handleNavClick(item.href);
+                    }}
+                    className="text-xl font-medium text-white hover:text-cyan-400 transition-colors"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 + (i * 0.1) }}
+                  >
+                    {item.label}
+                  </motion.a>
+                ))}
+              </div>
 
               <motion.a
                 href="#contact"
@@ -261,10 +264,10 @@ export function Navbar() {
                   setIsMobileOpen(false);
                   handleNavClick('#contact');
                 }}
-                className="mt-8 px-8 py-4 rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 text-white font-medium"
-                initial={{ opacity: 0, y: 20 }}
+                className="mt-2 w-full max-w-xs py-3.5 rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 text-white font-medium text-center shadow-lg shadow-purple-500/20"
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.4 }}
                 aria-label="Contact us to start a project"
               >
                 Start Project →
