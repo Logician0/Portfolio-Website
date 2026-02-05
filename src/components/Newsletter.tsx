@@ -15,20 +15,33 @@ export function Newsletter() {
 
     setStatus('loading');
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setStatus('success');
-    
-    // Reset after success
-    setTimeout(() => {
-      setEmail('');
-      setStatus('idle');
-    }, 4000);
+    // ✅ Restored the Real Backend Logic
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6kyFDZmdouIC-6TcsHsozCxWJFNn15Xf2KvY7vBqVfxhTuoKZmzURrBSvxWQILh_A/exec";
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email }),
+      });
+
+      setStatus('success');
+      
+      // Reset after success
+      setTimeout(() => {
+        setEmail('');
+        setStatus('idle');
+      }, 4000);
+
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
   };
 
   return (
-    <section className="relative py-8 sm:py-10 md:py-14 px-4 sm:px-6 overflow-hidden border-t border-white/5">
+    <section className="relative py-8 sm:py-10 md:py-14 px-4 sm:px-6 overflow-hidden border-t border-white/5 bg-zinc-950">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-gradient-to-b from-violet-500/10 to-transparent blur-3xl" />
