@@ -75,9 +75,10 @@ function BreathingIcon({
         style={{ boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)', willChange: 'transform' }}
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/10" />
-        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 relative z-10" />
+        {/* ✅ ACCESSIBILITY: Hide decorative icon from screen readers to avoid noise */}
+        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 relative z-10" aria-hidden="true" />
       </motion.div>
-      <span className="sr-only">{label}</span>
+      {/* ❌ REMOVED: Duplicate sr-only span (aria-label on <a> is sufficient) */}
     </motion.a>
   );
 }
@@ -116,12 +117,13 @@ export function SocialOrbit() {
           viewport={{ once: true }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-1">
-            <span className="bg-gradient-to-r from-white via-zinc-300 to-zinc-500 bg-clip-text text-transparent">
+            {/* ✅ CONTRAST: Increased gradient brightness to pass contrast tests */}
+            <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
               About Us
             </span>
           </h2>
-          {/* ✅ CONTRAST FIX: Increased from zinc-500 to zinc-300 */}
-          <p className="text-zinc-300 text-xs sm:text-sm">
+          {/* ✅ CONTRAST: Increased from zinc-300 to zinc-200 for deep black backgrounds */}
+          <p className="text-zinc-200 text-xs sm:text-sm">
             The creative minds behind your digital success
           </p>
         </motion.div>
@@ -151,7 +153,6 @@ export function SocialOrbit() {
 
               <motion.button
                 onClick={() => setIconsVisible(!iconsVisible)}
-                // ✅ ACCESSIBILITY: Expanded state and descriptive label
                 aria-expanded={iconsVisible}
                 aria-label={iconsVisible ? "Close social connections" : "Open social connections"}
                 className="relative z-10 rounded-full focus:outline-none group"
@@ -174,7 +175,7 @@ export function SocialOrbit() {
                 <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full overflow-hidden bg-zinc-900">
                   <img
                     src="/my-photo.jpg" 
-                    alt="Suraj Kumar - Founder & CEO"
+                    alt="Suraj Kumar - Founder & CEO of Logician Creatives"
                     className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
                     loading="eager"
                   />
@@ -186,13 +187,14 @@ export function SocialOrbit() {
               <div className="inline-block">
                 <button
                   onClick={() => setIconsVisible(!iconsVisible)}
-                  className="text-xs text-cyan-400/80 hover:text-cyan-400 transition-colors uppercase tracking-wider font-medium"
+                  // ✅ TARGET SIZE: Added padding for easier tapping
+                  className="py-2 px-4 text-xs text-cyan-400/80 hover:text-cyan-400 transition-colors uppercase tracking-wider font-medium"
                 >
                   {iconsVisible ? 'Close' : 'Tap to Connect'}
                 </button>
                 <h3 className="text-xl font-bold text-white mt-1">Suraj Kumar</h3>
-                {/* ✅ CONTRAST FIX: Increased from zinc-500 to zinc-400 */}
-                <p className="text-zinc-400 text-sm">Founder & CEO</p>
+                {/* ✅ CONTRAST: Increased from zinc-400 to zinc-300 */}
+                <p className="text-zinc-300 text-sm">Founder & CEO</p>
               </div>
             </div>
           </div>
@@ -207,7 +209,8 @@ export function SocialOrbit() {
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
               Crafting Digital Excellence
             </h3>
-            <div className="space-y-4 text-zinc-300 text-sm sm:text-base leading-relaxed">
+            {/* ✅ CONTRAST: Increased from zinc-300 to zinc-200 */}
+            <div className="space-y-4 text-zinc-200 text-sm sm:text-base leading-relaxed">
               <p>
                 At <span className="text-cyan-400 font-medium">Logician Creatives</span>, we transform 
                 visionary ideas into digital masterpieces. With expertise in AI, 
@@ -223,8 +226,8 @@ export function SocialOrbit() {
               ].map((stat) => (
                 <div key={stat.label} className="text-center lg:text-left">
                   <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>
-                  {/* ✅ CONTRAST FIX: Increased from zinc-500 to zinc-400 */}
-                  <div className="text-zinc-400 text-xs uppercase tracking-wider mt-1">{stat.label}</div>
+                  {/* ✅ CONTRAST: Increased from zinc-400 to zinc-300 */}
+                  <div className="text-zinc-300 text-xs uppercase tracking-wider mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
