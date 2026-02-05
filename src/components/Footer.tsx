@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom'; // ✅ IMPORTED: Critical for fixing the modal
 import { motion, AnimatePresence } from 'framer-motion';
 import { Youtube, Twitter, Instagram, Linkedin, Github, Heart, Sparkles, X, Shield, FileText } from 'lucide-react';
 import { Link } from '@/lib/router';
@@ -43,47 +44,66 @@ const legalContent = {
 function LegalModal({ type, onClose }: { type: 'privacy' | 'terms'; onClose: () => void }) {
   const content = legalContent[type];
   const Icon = content.icon;
+  const [mounted, setMounted] = useState(false);
 
-  return (
+  // ✅ FIX: Wait for mount to access document.body
+  useEffect(() => {
+    setMounted(true);
+    // Optional: Prevent background scrolling while modal is open
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'unset'; };
+  }, []);
+
+  if (!mounted) return null;
+
+  // ✅ FIX: createPortal moves this div OUT of the Footer and into the Body
+  return createPortal(
     <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4" // ✅ Z-Index 9999 ensures it's on top of EVERYTHING
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      style={{ willChange: 'opacity' }}
+      style={{ 
+        willChange: 'opacity',
+        backgroundColor: 'rgba(0,0,0,0.8)', // ✅ Fallback dark overlay
+        backdropFilter: 'blur(8px)'          // ✅ Nice blur effect
+      }}
     >
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={onClose} />
+      {/* Click outside to close */}
+      <div className="absolute inset-0" onClick={onClose} />
+      
       <motion.div
         className="relative z-10 w-full max-w-lg bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        style={{ willChange: 'transform, opacity' }}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="modal-title"
       >
         <div className="flex items-center justify-between p-6 border-b border-white/10 bg-white/5">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-violet-500/20 text-violet-400">
               <Icon className="w-5 h-5" aria-hidden="true" />
             </div>
-            <h3 id="modal-title" className="text-xl font-bold text-white">{content.title}</h3>
+            <h3 className="text-xl font-bold text-white">{content.title}</h3>
           </div>
           <button onClick={onClose} className="text-zinc-400 hover:text-white p-2" aria-label="Close modal">
             <X className="w-5 h-5" />
           </button>
         </div>
+        
         <div className="p-6 max-h-[60vh] overflow-y-auto">
           {content.content}
         </div>
+        
         <div className="p-6 border-t border-white/10 flex justify-end">
-          <button onClick={onClose} className="px-6 py-2.5 bg-white text-black rounded-lg font-medium hover:bg-zinc-200">
+          <button onClick={onClose} className="px-6 py-2.5 bg-white text-black rounded-lg font-medium hover:bg-zinc-200 transition-colors">
             Close
           </button>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body // ✅ Target destination: The Layout Body (bypassing Footer restrictions)
   );
 }
 
@@ -116,7 +136,7 @@ export function Footer() {
           {/* Mobile Footer */}
           <div className="block md:hidden py-6">
             <div className="flex items-center justify-between mb-4">
-              <Link to="/" className="flex items-center gap-2" aria-label="Logician Creatives Home" onClick={() => window.scrollTo(0, 0)}>
+              <Link to="/" className="flex items-center gap-2" aria-label="Home" onClick={() => window.scrollTo(0, 0)}>
                 <motion.img
                   src="/logo.png"
                   alt="Logician Creatives Logo"
@@ -181,7 +201,7 @@ export function Footer() {
                     <Link 
                         to="/careers" 
                         className="text-zinc-300 hover:text-white"
-                        onClick={() => window.scrollTo(0, 0)} // ✅ Fix: Scrolls to top on click
+                        onClick={() => window.scrollTo(0, 0)}
                     >
                         Careers
                     </Link>
@@ -280,7 +300,7 @@ export function Footer() {
                     <Link 
                         to="/careers" 
                         className="text-zinc-300 hover:text-white"
-                        onClick={() => window.scrollTo(0, 0)} // ✅ Fix
+                        onClick={() => window.scrollTo(0, 0)}
                     >
                         Careers
                     </Link>
@@ -385,11 +405,10 @@ export function Footer() {
                       </button>
                     </li>
                     <li>
-                        {/* ✅ THE FIX: Added onClick scroll reset */}
                         <Link 
                             to="/careers" 
                             className="text-zinc-300 hover:text-white transition-colors"
-                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                            onClick={() => window.scrollTo(0, 0)}
                         >
                             Careers
                         </Link>
