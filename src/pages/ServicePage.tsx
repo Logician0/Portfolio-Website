@@ -9,7 +9,7 @@ import type { Item, Category } from '@/lib/types';
 
 const iconMap: Record<string, React.ElementType> = { Bot, Film, Code2 };
 
-// --- ITEM MODAL (UNCHANGED) ---
+// --- ITEM MODAL ---
 interface ItemModalProps {
   item: Item | null;
   isOpen: boolean;
@@ -42,22 +42,22 @@ function ItemModal({ item, isOpen, onClose }: ItemModalProps) {
     <AnimatePresence>
       {isOpen && (
         <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <motion.div className="absolute inset-0 bg-black/90 backdrop-blur-xl" onClick={onClose} />
-          <motion.div className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto" initial={{ scale: 0.95, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} onClick={(e) => e.stopPropagation()}>
-            <button onClick={onClose} className="absolute top-3 right-3 z-20 p-2 bg-black/60 rounded-full text-white"><X className="w-5 h-5" /></button>
-            <div className="rounded-2xl overflow-hidden bg-zinc-900 border border-white/10">
-              <div className="aspect-video relative">
+          <motion.div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
+          <motion.div className="relative z-10 w-full max-w-2xl max-h-[80vh] overflow-y-auto font-sans" initial={{ scale: 0.98, opacity: 0, y: 8 }} animate={{ scale: 1, opacity: 1, y: 0 }} onClick={(e) => e.stopPropagation()}>
+            <button onClick={onClose} className="absolute top-3 right-3 z-20 p-1.5 bg-black/40 hover:bg-black/60 rounded-full text-white transition-colors"><X className="w-4 h-4" /></button>
+            <div className="rounded-xl overflow-hidden bg-zinc-950 border border-white/5 shadow-2xl">
+              <div className="aspect-video relative bg-zinc-900">
                 <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
               </div>
               <div className="p-5">
-                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                <p className="text-sm text-zinc-400 mb-4">{item.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {item.tags.map(tag => <span key={tag} className="px-2 py-1 rounded-md text-[10px] bg-white/5 text-zinc-300 border border-white/10 uppercase tracking-wide">{tag}</span>)}
+                <h3 className="text-xl font-bold text-white tracking-tight mb-2">{item.title}</h3>
+                <p className="text-xs text-zinc-400 mb-6 leading-relaxed font-medium">{item.description}</p>
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {item.tags.map(tag => <span key={tag} className="px-2 py-0.5 rounded bg-white/5 text-zinc-400 border border-white/5 text-[9px] uppercase tracking-wider font-bold">{tag}</span>)}
                 </div>
                 {metadata.url && (
-                  <a href={metadata.url} target="_blank" rel="noopener noreferrer" className="block w-full text-center py-3 rounded-xl bg-white text-black font-bold text-sm">
-                    Visit Website
+                  <a href={metadata.url} target="_blank" rel="noopener noreferrer" className="block w-full text-center py-3 rounded-lg bg-white text-black font-bold text-[10px] uppercase tracking-tight hover:bg-pink-500 hover:text-white transition-all">
+                    Launch Project
                   </a>
                 )}
               </div>
@@ -83,12 +83,11 @@ export function ServicePage() {
   const isVideoService = service.slug === 'video-editing';
   const isLocked = service.slug === 'ai-agents';
 
-  // Theme Colors
   const theme = {
-    violet: { bg: 'from-violet-600', text: 'text-violet-400', border: 'border-violet-500/30' },
-    pink:   { bg: 'from-pink-600',   text: 'text-pink-400',   border: 'border-pink-500/30' },
-    cyan:   { bg: 'from-cyan-600',   text: 'text-cyan-400',   border: 'border-cyan-500/30' },
-  }[service.color] || { bg: 'from-white', text: 'text-zinc-400', border: 'border-white/10' };
+    violet: { bg: 'from-violet-600', text: 'text-violet-400', border: 'border-violet-500/20' },
+    pink:   { bg: 'from-pink-600',   text: 'text-pink-400',   border: 'border-pink-500/20' },
+    cyan:   { bg: 'from-cyan-600',   text: 'text-cyan-400',   border: 'border-cyan-500/20' },
+  }[service.color] || { bg: 'from-white', text: 'text-zinc-400', border: 'border-white/5' };
 
   const handleCategoryClick = (category: Category) => { if (isVideoService) navigate(`/services/video-editing/${category.id}`); };
   const handleItemClick = (item: Item) => {
@@ -98,30 +97,25 @@ export function ServicePage() {
 
   return (
     <>
-      <div className="min-h-screen bg-black pt-20 pb-20 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
+      <div className="min-h-screen bg-black pt-12 pb-16 px-4 sm:px-8 selection:bg-pink-500/30 font-sans">
+        <div className="max-w-6xl mx-auto">
           
           {/* --- 1. COMPACT HEADER --- */}
-          <div className="mb-6 lg:mb-10">
-            <Link to="/" className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-white mb-6 text-[10px] uppercase font-bold tracking-widest transition-colors">
-              <ArrowLeft className="w-3 h-3" /> Back
+          <div className="mb-10">
+            <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-white mb-8 text-[10px] uppercase font-bold tracking-widest transition-all group">
+              <ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" /> Back to Studio
             </Link>
             
             <div className="flex items-start justify-between gap-4">
               <div>
-                {/* --- CHANGED: Flex container to put Icon and Title side-by-side --- */}
-                <motion.div 
-                   initial={{ opacity: 0, y: 5 }} 
-                   animate={{ opacity: 1, y: 0 }} 
-                   className="flex items-center gap-3 sm:gap-4 mb-3"
-                >
-                   <Icon className={`w-6 h-6 sm:w-10 sm:h-10 ${theme.text}`} />
-                   <h1 className="text-2xl sm:text-5xl font-bold text-white tracking-tight leading-none">
+                <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-4">
+                   <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${theme.text}`} />
+                   <h1 className="text-xl sm:text-3xl font-bold text-white tracking-tight uppercase leading-none">
                      {service.title === 'Web Development' ? 'Web Engineering' : service.title}
                    </h1>
                 </motion.div>
                 
-                <p className="text-xs sm:text-base text-zinc-400 leading-relaxed max-w-xl line-clamp-2 sm:line-clamp-none ml-1">
+                <p className="text-[10px] sm:text-xs text-zinc-500 leading-relaxed max-w-md font-medium">
                   {service.description}
                 </p>
               </div>
@@ -129,29 +123,29 @@ export function ServicePage() {
           </div>
 
           {/* --- 2. MOBILE SCROLLABLE CAPABILITIES --- */}
-          <div className="lg:hidden mb-8 -mx-4 px-4 overflow-x-auto no-scrollbar flex gap-2">
-            <div className={`flex-shrink-0 px-3 py-1.5 rounded-full border ${theme.border} bg-white/[0.02] flex items-center gap-1.5`}>
+          <div className="lg:hidden mb-12 -mx-4 px-4 overflow-x-auto no-scrollbar flex gap-2">
+            <div className={`flex-shrink-0 px-3 py-1.5 rounded-md border ${theme.border} bg-white/[0.02] flex items-center gap-1.5`}>
                <Sparkles className={`w-3 h-3 ${theme.text}`} />
-               <span className={`text-[10px] font-bold ${theme.text}`}>Why Us?</span>
+               <span className={`text-[9px] font-bold uppercase tracking-widest ${theme.text}`}>Capabilities</span>
             </div>
             {["Rapid Delivery", "24/7 Support", "Enterprise Scale", "Custom Built"].map((item, i) => (
-               <div key={i} className="flex-shrink-0 px-3 py-1.5 rounded-full border border-white/10 bg-zinc-900/50 text-[10px] text-zinc-300 font-medium whitespace-nowrap">
+               <div key={i} className="flex-shrink-0 px-3 py-1.5 rounded-md border border-white/5 bg-zinc-900/30 text-[9px] text-zinc-500 font-bold uppercase tracking-wider whitespace-nowrap">
                   {item}
                </div>
             ))}
           </div>
 
           {/* --- 3. MAIN CONTENT GRID --- */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
-            {/* Desktop Sidebar (Hidden on Mobile) */}
+            {/* Desktop Sidebar */}
             <div className="hidden lg:block lg:col-span-3 space-y-6">
-               <div className="p-6 rounded-2xl border border-white/10 bg-zinc-900/20">
-                  <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Capabilities</h3>
+               <div className="p-6 rounded-xl border border-white/5 bg-zinc-900/20">
+                  <h3 className="font-bold text-white mb-5 text-[10px] uppercase tracking-wider">Core Capabilities</h3>
                   <ul className="space-y-3">
                      {["Rapid Delivery", "24/7 Support", "Enterprise Scale", "Custom Built"].map((item, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-zinc-400">
-                           <CheckCircle2 className={`w-4 h-4 ${theme.text}`} /> {item}
+                        <li key={i} className="flex items-center gap-2 text-[11px] font-medium text-zinc-500">
+                           <CheckCircle2 className={`w-3.5 h-3.5 ${theme.text}`} /> {item}
                         </li>
                      ))}
                   </ul>
@@ -161,69 +155,64 @@ export function ServicePage() {
             {/* Content Area */}
             <div className="lg:col-span-9">
               {isLocked ? (
-                <div className="flex flex-col items-center justify-center py-20 rounded-2xl border border-white/5 bg-white/[0.02] text-center">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${theme.bg} to-transparent flex items-center justify-center mb-4 opacity-80`}>
-                    <Timer className="w-6 h-6 text-white" />
-                  </div>
-                  <h2 className="text-xl font-bold text-white mb-1">Coming Soon</h2>
-                  <p className="text-xs text-zinc-500">Case studies dropping shortly.</p>
+                <div className="flex flex-col items-center justify-center py-32 rounded-3xl border border-white/5 bg-zinc-900/10 text-center backdrop-blur-sm">
+                  <Timer className="w-5 h-5 text-zinc-800 mb-4" />
+                  <h2 className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">Encrypted Data</h2>
+                  <p className="text-[9px] text-zinc-700 mt-2 uppercase tracking-wider font-medium">Case studies pending release.</p>
                 </div>
               ) : (
-                <div className="space-y-8">
+                <div className="space-y-12">
                   
-                  {/* VIDEO EDITING: Compact 2-Col Grid on Mobile */}
+                  {/* VIDEO EDITING GRID (Square) */}
                   {isVideoService && (
-                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                       {service.categories.map((category, idx) => (
                         <motion.div
                            key={category.id}
                            initial={{ opacity: 0, y: 10 }}
                            animate={{ opacity: 1, y: 0 }}
-                           transition={{ delay: idx * 0.05 }}
+                           transition={{ delay: idx * 0.03 }}
                            onClick={() => handleCategoryClick(category)}
-                           className="group relative aspect-[3/4] sm:aspect-video rounded-xl overflow-hidden bg-zinc-900 border border-white/10 cursor-pointer"
+                           className="group relative aspect-square rounded-xl overflow-hidden bg-zinc-900 border border-white/5 cursor-pointer shadow-lg shadow-black/50"
                         >
-                           <img src={category.image} alt={category.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
-                           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                           <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4">
-                              <div className="text-[9px] font-bold text-white/70 mb-1 uppercase tracking-wider">{category.items.length} Projects</div>
-                              <h3 className="text-sm sm:text-lg font-bold text-white leading-tight">{category.title}</h3>
+                           <img src={category.image} alt={category.title} className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" />
+                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                           <div className="absolute bottom-0 inset-x-0 p-4">
+                              <div className="text-[8px] font-bold text-white/40 mb-1.5 uppercase tracking-widest">{category.items.length} Projects</div>
+                              <h3 className="text-sm sm:text-base font-bold text-white leading-tight uppercase tracking-tight">{category.title}</h3>
                            </div>
                         </motion.div>
                       ))}
                     </div>
                   )}
 
-                  {/* WEB & AI: Forced 2-Col Grid on Mobile (High Density) */}
+                  {/* WEB & AI GRID (Square) */}
                   {!isVideoService && service.categories.map((category) => (
-                    <div key={category.id} className="bg-zinc-900/20 border border-white/5 rounded-2xl p-4 sm:p-6">
-                      <div className="flex items-baseline gap-2 mb-4">
-                         <h2 className="text-sm sm:text-lg font-bold text-white">{category.title}</h2>
-                         <div className="h-px flex-1 bg-white/10"></div>
+                    <div key={category.id} className="bg-zinc-900/10 border border-white/5 rounded-xl p-5 sm:p-6">
+                      <div className="flex items-center gap-4 mb-6">
+                         <h2 className="text-[10px] sm:text-[11px] font-bold text-white uppercase tracking-wider">{category.title}</h2>
+                         <div className="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
                       </div>
                       
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         {category.items.map((item) => (
                            <div 
                              key={item.id} 
                              onClick={() => handleItemClick(item)}
-                             className="group bg-black border border-white/10 rounded-xl overflow-hidden cursor-pointer hover:border-white/20 transition-colors"
+                             className="group bg-zinc-950 border border-white/5 rounded-lg overflow-hidden cursor-pointer hover:border-white/10 transition-all duration-300"
                            >
-                             <div className="aspect-[4/3] sm:aspect-video bg-zinc-800 relative overflow-hidden">
-                                <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
-                                <div className="absolute top-2 right-2">
-                                   {item.metadata.type === 'web' ? <Globe className="w-3 h-3 text-white drop-shadow-md" /> : <Terminal className="w-3 h-3 text-white drop-shadow-md" />}
+                             <div className="aspect-square bg-zinc-900 relative overflow-hidden">
+                                <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute top-2 right-2 p-1.5 bg-black/40 backdrop-blur-md rounded border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                   {item.metadata.type === 'web' ? <Globe className="w-2.5 h-2.5 text-white" /> : <Terminal className="w-2.5 h-2.5 text-white" />}
                                 </div>
                              </div>
                              
                              <div className="p-3">
-                                <h3 className="text-xs sm:text-sm font-bold text-zinc-100 mb-1 line-clamp-1">{item.title}</h3>
-                                <p className="text-[10px] text-zinc-500 line-clamp-2 leading-tight mb-2">{item.description}</p>
-                                <div className="flex flex-wrap gap-1">
+                                <h3 className="text-[10px] font-bold text-zinc-100 uppercase tracking-tight line-clamp-1 group-hover:text-pink-500 transition-colors leading-none mb-2">{item.title}</h3>
+                                <div className="flex gap-1.5 mt-1.5 overflow-hidden">
                                    {item.tags.slice(0, 2).map(tag => (
-                                      <span key={tag} className="text-[8px] px-1.5 py-0.5 bg-white/5 text-zinc-400 rounded border border-white/5">
-                                         {tag}
-                                      </span>
+                                      <span key={tag} className="text-[8px] font-bold text-zinc-600 uppercase tracking-tight">#{tag}</span>
                                    ))}
                                 </div>
                              </div>
