@@ -25,11 +25,20 @@ export function Marquee() {
 
       {/* Row 1 - Left to Right */}
       <div className="relative mb-4">
-        {/* Fade edges */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
         
-        <div className="flex marquee">
+        {/* REPLACED: CSS class 'marquee' with GPU-accelerated motion.div */}
+        <motion.div 
+          className="flex"
+          animate={{ x: ['-50%', '0%'] }} // Moves Left to Right
+          transition={{ 
+            duration: 40, // Slower for smoother visuals
+            ease: "linear", 
+            repeat: Infinity 
+          }}
+          style={{ willChange: 'transform' }} // Forces GPU Rendering
+        >
           {[...toolsRow1, ...toolsRow1].map((tool, index) => (
             <motion.div
               key={`${tool.id}-${index}`}
@@ -48,16 +57,25 @@ export function Marquee() {
               </span>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Row 2 - Right to Left */}
       <div className="relative">
-        {/* Fade edges */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
         
-        <div className="flex marquee-reverse">
+        {/* REPLACED: CSS class 'marquee-reverse' with GPU-accelerated motion.div */}
+        <motion.div 
+          className="flex"
+          animate={{ x: ['0%', '-50%'] }} // Moves Right to Left
+          transition={{ 
+            duration: 40, 
+            ease: "linear", 
+            repeat: Infinity 
+          }}
+          style={{ willChange: 'transform' }} // Forces GPU Rendering
+        >
           {[...toolsRow2, ...toolsRow2].map((tool, index) => (
             <motion.div
               key={`${tool.id}-rev-${index}`}
@@ -76,7 +94,7 @@ export function Marquee() {
               </span>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Expertise Areas - Compact */}
