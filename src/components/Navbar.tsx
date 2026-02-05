@@ -197,19 +197,33 @@ export function Navbar() {
 
       <AnimatePresence>
         {isMobileOpen && (
+          // ✅ FIX: Z-Index set to 100 to ensure it sits ON TOP of everything
           <motion.div
-            className="fixed inset-0 z-40 bg-black/98 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-[100] bg-black md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             aria-modal="true"
             role="dialog"
           >
-            {/* FIXED: pt-20 is enough space below navbar. justify-start keeps it at top. */}
-            <div className="flex flex-col h-full pt-20 px-6 pb-6">
+            {/* ✅ FIX: Added Internal Header so the Close Button is never hidden */}
+            <div className="flex items-center justify-between px-4 py-4 border-b border-white/10">
+                <Link to="/" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-2">
+                    <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
+                    <span className="text-lg font-bold text-white">Logician</span>
+                </Link>
+                <button 
+                    onClick={() => setIsMobileOpen(false)}
+                    className="p-2 text-zinc-400 hover:text-white"
+                >
+                    <X size={28} />
+                </button>
+            </div>
+
+            <div className="flex flex-col h-full px-6 pt-6 pb-6 overflow-y-auto">
               
-              {/* 1. MAIN LINKS (Top Priority) */}
-              <div className="flex flex-col gap-4 mb-6">
+              {/* 1. MAIN LINKS */}
+              <div className="flex flex-col gap-5 mb-8">
                 {navItems.filter(item => !item.hasDropdown).map((item, i) => (
                   <motion.a
                     key={item.label}
@@ -230,7 +244,7 @@ export function Navbar() {
 
               <div className="w-full h-px bg-white/10 mb-6" />
 
-              {/* 2. SERVICES (Grid Layout - Saves vertical space) */}
+              {/* 2. SERVICES */}
               <div className="mb-auto">
                 <p className="text-zinc-500 text-xs uppercase tracking-widest mb-4 font-bold">Our Services</p>
                 <div className="grid grid-cols-2 gap-3">
@@ -257,14 +271,14 @@ export function Navbar() {
                 </div>
               </div>
 
-              {/* 3. CTA (Pinned to bottom area) */}
+              {/* 3. CTA */}
               <motion.a
                 href="#contact"
                 onClick={() => {
                   setIsMobileOpen(false);
                   handleNavClick('#contact');
                 }}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 text-white font-bold text-center shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2"
+                className="mt-6 w-full py-4 rounded-xl bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 text-white font-bold text-center shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
