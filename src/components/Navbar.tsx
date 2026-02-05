@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Bot, Film, Code2 } from 'lucide-react';
+import { Menu, X, ChevronDown, Bot, Film, Code2, ArrowRight } from 'lucide-react';
 import { Link, useRouter } from '@/lib/router';
 import { services } from '@/lib/data';
 import { cn } from '@/utils/cn';
@@ -185,7 +185,7 @@ export function Navbar() {
           </a>
 
           <button
-            className="md:hidden p-2 text-white"
+            className="md:hidden p-2 text-white z-50 relative"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             aria-expanded={isMobileOpen}
             aria-label={isMobileOpen ? "Close main menu" : "Open main menu"}
@@ -198,48 +198,18 @@ export function Navbar() {
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-black/98 backdrop-blur-xl md:hidden overflow-y-auto" // ✅ FIXED: Added overflow-y-auto for safety
+            className="fixed inset-0 z-40 bg-black/98 backdrop-blur-xl md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             aria-modal="true"
             role="dialog"
           >
-            {/* ✅ FIXED: Changed 'justify-center' to 'justify-start' and adjusted 'pt' to reduce scrolling */}
-            <div className="flex flex-col items-center justify-start h-full gap-5 pt-24 pb-10 px-4">
+            {/* FIXED: pt-20 is enough space below navbar. justify-start keeps it at top. */}
+            <div className="flex flex-col h-full pt-20 px-6 pb-6">
               
-              {/* Services Section - Made Compact */}
-              <div className="text-center w-full max-w-xs">
-                <p className="text-zinc-500 text-xs uppercase tracking-widest mb-3 font-bold">Our Services</p>
-                <div className="flex flex-col gap-2"> {/* Reduced gap from 3 to 2 */}
-                  {services.map((service, i) => {
-                    const Icon = iconMap[service.icon] || Bot;
-                    return (
-                      <motion.div
-                        key={service.slug}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.05 }} // Faster stagger
-                      >
-                        <Link
-                          to={`/services/${service.slug}`}
-                          onClick={() => setIsMobileOpen(false)}
-                          // ✅ FIXED: Reduced padding (py-3 -> py-2.5) to save space
-                          className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 active:bg-white/10 transition-colors"
-                        >
-                          <Icon className="w-4 h-4 text-zinc-300" aria-hidden="true" />
-                          <span className="text-base text-zinc-200">{service.title}</span>
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="w-full h-px bg-white/5 my-1" /> {/* Separator Line */}
-
-              {/* Main Links - Closer to the top now */}
-              <div className="flex flex-col gap-4 text-center">
+              {/* 1. MAIN LINKS (Top Priority) */}
+              <div className="flex flex-col gap-4 mb-6">
                 {navItems.filter(item => !item.hasDropdown).map((item, i) => (
                   <motion.a
                     key={item.label}
@@ -248,30 +218,61 @@ export function Navbar() {
                       setIsMobileOpen(false);
                       handleNavClick(item.href);
                     }}
-                    className="text-xl font-medium text-white hover:text-cyan-400 transition-colors"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 + (i * 0.1) }}
+                    className="text-3xl font-bold text-white tracking-tight"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + (i * 0.1) }}
                   >
                     {item.label}
                   </motion.a>
                 ))}
               </div>
 
+              <div className="w-full h-px bg-white/10 mb-6" />
+
+              {/* 2. SERVICES (Grid Layout - Saves vertical space) */}
+              <div className="mb-auto">
+                <p className="text-zinc-500 text-xs uppercase tracking-widest mb-4 font-bold">Our Services</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {services.map((service, i) => {
+                    const Icon = iconMap[service.icon] || Bot;
+                    return (
+                      <motion.div
+                        key={service.slug}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 + (i * 0.05) }}
+                      >
+                        <Link
+                          to={`/services/${service.slug}`}
+                          onClick={() => setIsMobileOpen(false)}
+                          className="flex flex-col gap-2 p-3 rounded-xl bg-white/5 border border-white/10 active:bg-white/10 transition-colors"
+                        >
+                          <Icon className="w-5 h-5 text-cyan-400" aria-hidden="true" />
+                          <span className="text-sm font-medium text-zinc-200">{service.title}</span>
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3. CTA (Pinned to bottom area) */}
               <motion.a
                 href="#contact"
                 onClick={() => {
                   setIsMobileOpen(false);
                   handleNavClick('#contact');
                 }}
-                className="mt-2 w-full max-w-xs py-3.5 rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 text-white font-medium text-center shadow-lg shadow-purple-500/20"
-                initial={{ opacity: 0, y: 10 }}
+                className="w-full py-4 rounded-xl bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 text-white font-bold text-center shadow-lg shadow-purple-500/20 flex items-center justify-center gap-2"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                aria-label="Contact us to start a project"
+                transition={{ delay: 0.5 }}
+                aria-label="Start a project"
               >
-                Start Project →
+                Start Project <ArrowRight size={18} />
               </motion.a>
+              
             </div>
           </motion.div>
         )}
