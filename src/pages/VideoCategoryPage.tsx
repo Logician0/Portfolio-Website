@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Play, Sparkles, Share2, ThumbsUp, Clock } from 'lucide-react';
+import { ArrowLeft, Play, Sparkles, Share2, ThumbsUp } from 'lucide-react';
 import { useParams, useRouter } from '@/lib/router';
 import { services } from '@/lib/data';
 import { cn } from '@/utils/cn';
