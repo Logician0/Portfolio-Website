@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, Lightbulb, Palette, Code, Rocket } from 'lucide-react';
 
@@ -39,7 +39,8 @@ function ProcessLoop() {
   const p2 = p1 + (arcLen / totalLen);
   const p3 = p2 + (lineLen / totalLen);
 
-  const getLightPosition = () => {
+  // Memoize light position to prevent unnecessary recalculations
+  const light = useMemo(() => {
     if (progress < p1) {
       const t = progress / p1;
       return { x: 60 + t * lineLen, y: 90 };
@@ -55,26 +56,26 @@ function ProcessLoop() {
       const angle = Math.PI / 2 + t * Math.PI;
       return { x: 60 + Math.cos(angle) * 30, y: 120 + Math.sin(angle) * 30 };
     }
-  };
-
-  const light = getLightPosition();
+  }, [progress, p1, p2, p3, lineLen]);
 
   // Active Logic
-  const getActiveStep = () => {
+  const activeStep = useMemo(() => {
     if (progress > 0.98) return 0; 
     if (progress > 0.73) return 5;
     if (progress > 0.57) return 4;
     if (progress > 0.33) return 3;
     if (progress > 0.16) return 2;
     return 1;
-  };
+  }, [progress]);
   
-  const activeStep = getActiveStep();
   const isLineActive = (stepId: number) => stepId <= activeStep;
 
   return (
-    // CONTAINER
-    <div className="relative w-[340px] h-[240px] mx-auto mt-12 md:mt-24 lg:mt-32 transform scale-100 sm:scale-125 md:scale-150 lg:scale-[1.75] origin-center select-none">
+    // CONTAINER: Added will-change to hint GPU
+    <div 
+      className="relative w-[340px] h-[240px] mx-auto mt-12 md:mt-24 lg:mt-32 transform scale-100 sm:scale-125 md:scale-150 lg:scale-[1.75] origin-center select-none"
+      style={{ willChange: 'contents' }}
+    >
       
       {/* --- CARDS --- */}
       <div className="absolute top-0 left-[60px] -translate-x-1/2 z-20">
@@ -94,7 +95,8 @@ function ProcessLoop() {
       </div>
 
       {/* --- SVG LAYER --- */}
-      <svg className="absolute inset-0 w-full h-full z-0 overflow-visible pointer-events-none">
+      {/* ACCESSIBILITY: aria-hidden added because this is purely decorative */}
+      <svg className="absolute inset-0 w-full h-full z-0 overflow-visible pointer-events-none" aria-hidden="true">
          <defs>
            <filter id="glow">
              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
@@ -131,6 +133,7 @@ function ProcessLoop() {
            strokeDasharray={totalLen} 
            strokeDashoffset={totalLen * (1 - progress)}
            className="drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]"
+           style={{ willChange: 'stroke-dashoffset' }} // Optimization
          />
 
          {/* Junction Dots */}
@@ -141,7 +144,7 @@ function ProcessLoop() {
          <circle cx="120" cy="150" r="3" fill={isLineActive(5) ? "#06b6d4" : "#3f3f46"} className="transition-colors duration-200" />
 
          {/* Ball */}
-         <g filter="url(#glow)">
+         <g filter="url(#glow)" style={{ willChange: 'transform' }}>
             <circle cx={light.x} cy={light.y} r="6" fill="#22d3ee" fillOpacity="0.8" />
             <circle cx={light.x} cy={light.y} r="3" fill="#ffffff" />
          </g>
@@ -150,7 +153,8 @@ function ProcessLoop() {
   );
 }
 
-function ProcessCard({ step, isActive }: { step: typeof steps[0], isActive: boolean }) {
+// PERFORMANCE: Wrapped in React.memo to stop 60FPS re-renders
+const ProcessCard = React.memo(({ step, isActive }: { step: typeof steps[0], isActive: boolean }) => {
   return (
     <motion.div
       className={`relative w-[64px] h-[64px] rounded-xl flex flex-col items-center justify-center border transition-all duration-500 z-10 ${
@@ -159,24 +163,25 @@ function ProcessCard({ step, isActive }: { step: typeof steps[0], isActive: bool
           : 'bg-black border-zinc-800'
       }`}
     >
-      <step.Icon size={18} className={`mb-1 transition-colors duration-500 ${isActive ? 'text-cyan-400' : 'text-zinc-600'}`} />
-      <span className={`text-[8px] font-bold uppercase transition-colors duration-500 ${isActive ? 'text-white' : 'text-zinc-600'}`}>
+      {/* CONTRAST: Changed inactive text from zinc-600 to zinc-500 */}
+      <step.Icon size={18} className={`mb-1 transition-colors duration-500 ${isActive ? 'text-cyan-400' : 'text-zinc-500'}`} aria-hidden="true" />
+      
+      {/* CONTRAST: Changed inactive text from zinc-600 to zinc-400 */}
+      <span className={`text-[8px] font-bold uppercase transition-colors duration-500 ${isActive ? 'text-white' : 'text-zinc-400'}`}>
         {step.title}
       </span>
+      
       <div className={`absolute -top-2 -right-2 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-bold border transition-colors duration-500 ${
-         isActive ? 'bg-cyan-500 text-black border-cyan-400' : 'bg-black text-zinc-700 border-zinc-800'
+         isActive ? 'bg-cyan-500 text-black border-cyan-400' : 'bg-black text-zinc-500 border-zinc-800'
       }`}>
         {step.id}
       </div>
     </motion.div>
   );
-}
+});
 
 export function Process() {
   return (
-    // UPDATED PADDING: 
-    // pt-4 md:pt-10 removes almost all top space above "Our Process".
-    // pb-12 md:pb-32 keeps bottom space for the animation.
     <section id="process" className="pt-4 pb-12 md:pt-10 md:pb-32 bg-black relative overflow-hidden flex flex-col items-center justify-center">
       <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/50 via-black to-zinc-950/50 pointer-events-none" />
       
@@ -184,7 +189,8 @@ export function Process() {
         {/* Header */}
         <div className="text-center mb-0 md:mb-8">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-2">Our Process</h2>
-          <p className="text-zinc-500 text-sm md:text-base">A proven path to results.</p>
+          {/* CONTRAST: Changed from zinc-500 to zinc-400 */}
+          <p className="text-zinc-400 text-sm md:text-base">A proven path to results.</p>
         </div>
 
         {/* Animation */}
