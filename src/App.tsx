@@ -1,7 +1,9 @@
 'use client';
 
 import React, { Suspense, lazy } from 'react';
-import { RouterProvider, Routes, Route } from '@/lib/router';
+// ✅ FIXED: Replaced custom RouterProvider with standard BrowserRouter
+import { BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from '@/lib/router';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 
@@ -10,8 +12,6 @@ const HomePage = lazy(() => import('@/pages/HomePage').then(module => ({ default
 const ServicePage = lazy(() => import('@/pages/ServicePage').then(module => ({ default: module.ServicePage })));
 const VideoCategoryPage = lazy(() => import('@/pages/VideoCategoryPage').then(module => ({ default: module.VideoCategoryPage })));
 const CareersPage = lazy(() => import('@/pages/CareersPage').then(module => ({ default: module.CareersPage })));
-
-// ❌ REMOVED: ProjectCinema import (since we deleted the file)
 
 // Simple loading spinner
 const PageLoader = () => (
@@ -22,7 +22,8 @@ const PageLoader = () => (
 
 export function App() {
   return (
-    <RouterProvider>
+    // ✅ FIXED: Using BrowserRouter removes the "#" from URLs
+    <BrowserRouter>
       <div className="min-h-screen bg-black text-white antialiased cursor-default">
         <Navbar />
 
@@ -31,9 +32,6 @@ export function App() {
             <Route path="/" component={HomePage} />
             <Route path="/careers" component={CareersPage} />
             
-            {/* ❌ REMOVED: The /watch/:id route is no longer needed. 
-                The VideoCategoryPage below now handles playing videos directly. */}
-
             {/* Route for Video Categories (Player is now INSIDE here) */}
             <Route path="/services/video-editing/:categoryId" component={VideoCategoryPage} />
             
@@ -44,6 +42,6 @@ export function App() {
 
         <Footer />
       </div>
-    </RouterProvider>
+    </BrowserRouter>
   );
 }
