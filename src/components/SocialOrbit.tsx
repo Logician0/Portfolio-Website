@@ -42,7 +42,6 @@ function BreathingIcon({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      // ✅ ACCESSIBILITY: Explicit label for screen readers
       aria-label={`Follow us on ${label}`}
       className="absolute z-0 flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full cursor-pointer"
       style={{
@@ -66,7 +65,6 @@ function BreathingIcon({
         scale: { type: 'spring', stiffness: 120, damping: 14, delay: index * 0.05 },
         opacity: { duration: 0.2 }
       }}
-      onClick={(e) => e.stopPropagation()}
     >
       <motion.div
         className="w-full h-full flex items-center justify-center rounded-full bg-black/80 border border-cyan-500/40 shadow-lg"
@@ -75,10 +73,8 @@ function BreathingIcon({
         style={{ boxShadow: '0 0 15px rgba(6, 182, 212, 0.3)', willChange: 'transform' }}
       >
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/10" />
-        {/* ✅ ACCESSIBILITY: Hide decorative icon from screen readers to avoid noise */}
         <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400 relative z-10" aria-hidden="true" />
       </motion.div>
-      {/* ❌ REMOVED: Duplicate sr-only span (aria-label on <a> is sufficient) */}
     </motion.a>
   );
 }
@@ -106,7 +102,7 @@ export function SocialOrbit() {
   const iconPositions = useMemo(() => getIconPositions(radius), [radius]);
 
   return (
-    <section id="about" className="py-6 sm:py-10 md:py-14 bg-black relative overflow-hidden">
+    <section id="about" className="py-6 sm:py-10 md:py-14 bg-black relative overflow-hidden" aria-label="About Logician Creatives">
       <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-950/50 to-black" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
@@ -117,12 +113,11 @@ export function SocialOrbit() {
           viewport={{ once: true }}
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-1">
-            {/* ✅ CONTRAST: Increased gradient brightness to pass contrast tests */}
-            <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-white via-zinc-100 to-zinc-300 bg-clip-text text-transparent">
               About Us
             </span>
           </h2>
-          {/* ✅ CONTRAST: Increased from zinc-300 to zinc-200 for deep black backgrounds */}
+          {/* CONTRAST: Bumped from zinc-300 to zinc-200 */}
           <p className="text-zinc-200 text-xs sm:text-sm">
             The creative minds behind your digital success
           </p>
@@ -177,7 +172,7 @@ export function SocialOrbit() {
                     src="/my-photo.webp" 
                     alt="Suraj Kumar - Founder & CEO of Logician Creatives"
                     className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
-                    loading="eager"
+                    loading="eager" // Key for LCP
                   />
                 </div>
               </motion.button>
@@ -187,13 +182,12 @@ export function SocialOrbit() {
               <div className="inline-block">
                 <button
                   onClick={() => setIconsVisible(!iconsVisible)}
-                  // ✅ TARGET SIZE: Added padding for easier tapping
-                  className="py-2 px-4 text-xs text-cyan-400/80 hover:text-cyan-400 transition-colors uppercase tracking-wider font-medium"
+                  className="py-2 px-4 text-xs text-cyan-400 hover:text-cyan-300 transition-colors uppercase tracking-wider font-medium"
                 >
                   {iconsVisible ? 'Close' : 'Tap to Connect'}
                 </button>
                 <h3 className="text-xl font-bold text-white mt-1">Suraj Kumar</h3>
-                {/* ✅ CONTRAST: Increased from zinc-400 to zinc-300 */}
+                {/* CONTRAST: Bumped from zinc-400 to zinc-300 */}
                 <p className="text-zinc-300 text-sm">Founder & CEO</p>
               </div>
             </div>
@@ -209,7 +203,6 @@ export function SocialOrbit() {
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4">
               Crafting Digital Excellence
             </h3>
-            {/* ✅ CONTRAST: Increased from zinc-300 to zinc-200 */}
             <div className="space-y-4 text-zinc-200 text-sm sm:text-base leading-relaxed">
               <p>
                 At <span className="text-cyan-400 font-medium">Logician Creatives</span>, we transform 
@@ -226,7 +219,7 @@ export function SocialOrbit() {
               ].map((stat) => (
                 <div key={stat.label} className="text-center lg:text-left">
                   <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>
-                  {/* ✅ CONTRAST: Increased from zinc-400 to zinc-300 */}
+                  {/* CONTRAST: Bumped to zinc-300 for accessibility */}
                   <div className="text-zinc-300 text-xs uppercase tracking-wider mt-1">{stat.label}</div>
                 </div>
               ))}

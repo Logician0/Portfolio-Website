@@ -305,82 +305,77 @@ export const services: Service[] = [
     gradient: 'from-cyan-600 via-teal-600 to-emerald-600',
     categories: [
       {
-        id: 'cat-ecommerce',
-        title: 'E-commerce',
-        description: 'High-converting storefronts that turn browsers into buyers',
-        image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=80',
+        id: 'cat-corporate',
+        title: 'Corporate & Business Websites',
+        description: 'Professional, high-performance web solutions for established enterprises and growing businesses.',
+        image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&auto=format&fit=crop&q=80',
         items: [
           {
-            id: 'item-luxury-fashion',
-            title: 'Luxury Fashion',
-            description: 'Premium Shopify Plus storefronts with headless architecture for ultimate performance.',
-            thumbnail: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&auto=format&fit=crop&q=80',
-            tags: ['Shopify Plus', 'Headless', 'Luxury'],
+            id: 'item-corp-1',
+            title: 'Shree Ram Properties',
+            description: 'A premium real estate platform featuring dynamic property listings and seamless lead capture.',
+            thumbnail: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format&fit=crop&q=80',
+            tags: ['Real Estate', 'Next.js', 'Corporate'],
             metadata: {
               type: 'web',
-              url: 'https://www.shopify.com/plus',
-              stack: 'Hydrogen + Remix',
-              features: ['AR Try-On', 'Personalization', 'Inventory Sync']
+              url: 'https://logiciancreatives.in',
+              stack: 'Next.js + Tailwind + Framer Motion',
+              features: ['Property Search', 'Lead Generation', 'Admin Dashboard']
             }
           },
           {
-            id: 'item-d2c-brand',
-            title: 'D2C Brand Store',
-            description: 'Direct-to-consumer stores built for scale with subscription and loyalty features.',
-            thumbnail: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&auto=format&fit=crop&q=80',
-            tags: ['D2C', 'Subscriptions', 'Scale'],
+            id: 'item-corp-2',
+            title: 'Aditya General Store',
+            description: 'A modern digital storefront streamlining inventory and customer engagement for local business.',
+            thumbnail: 'https://images.unsplash.com/photo-1580828343064-fde4fc206bc6?w=600&auto=format&fit=crop&q=80',
+            tags: ['E-commerce', 'Local Business', 'Retail'],
             metadata: {
               type: 'web',
-              url: 'https://www.shopify.com',
-              stack: 'Shopify + Custom Theme',
-              features: ['Subscription Engine', 'Loyalty Program', 'Analytics']
+              url: 'https://logiciancreatives.in',
+              stack: 'React + Node.js',
+              features: ['Inventory Sync', 'WhatsApp Integration', 'Digital Catalog']
             }
           }
         ]
       },
       {
-        id: 'cat-saas',
-        title: 'SaaS Platforms',
-        description: 'Scalable software products built for growth',
+        id: 'cat-landing-pages',
+        title: 'Marketing & Landing Pages',
+        description: 'Conversion-focused single-page experiences designed to turn visitors into lifelong customers.',
         image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80',
         items: [
           {
-            id: 'item-analytics-dashboard',
-            title: 'Analytics Dashboard',
-            description: 'Real-time analytics platforms with beautiful data visualization and insights.',
-            thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80',
-            tags: ['Next.js', 'D3.js', 'Real-time'],
+            id: 'item-landing-1',
+            title: 'High-Conversion SaaS Landing',
+            description: 'Optimized for lead generation with interactive elements and lightning-fast performance.',
+            thumbnail: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&auto=format&fit=crop&q=80',
+            tags: ['Marketing', 'Framer Motion', 'Conversion'],
             metadata: {
               type: 'web',
-              url: 'https://vercel.com/analytics',
-              stack: 'Next.js + D3.js + PostgreSQL',
-              features: ['Real-time Updates', 'Custom Charts', 'Export']
+              url: 'https://logiciancreatives.in',
+              stack: 'Next.js + Framer Motion',
+              features: ['A/B Tested', 'Mobile First', 'Heatmap Ready']
             }
-          },
+          }
+        ]
+      },
+      {
+        id: 'cat-portfolios',
+        title: 'Personal Portfolios & V-Cards',
+        description: 'Bespoke digital identities for creatives, professionals, and thought leaders.',
+        image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80',
+        items: [
           {
-            id: 'item-ai-platform',
-            title: 'AI Platform',
-            description: 'Full-stack AI/ML platforms with model training, inference, and monitoring.',
-            thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&auto=format&fit=crop&q=80',
-            tags: ['Python', 'React', 'ML Ops'],
+            id: 'item-portfolio-1',
+            title: 'Creative Director Portfolio',
+            description: 'Immersive storytelling through visual design and smooth, interactive motion.',
+            thumbnail: 'https://images.unsplash.com/photo-1545235617-9465d2a55698?w=600&auto=format&fit=crop&q=80',
+            tags: ['Portfolio', 'Creative', 'Motion'],
             metadata: {
               type: 'web',
-              url: 'https://openai.com',
-              stack: 'Python + FastAPI + React',
-              features: ['Model Training', 'API Gateway', 'Usage Analytics']
-            }
-          },
-          {
-            id: 'item-crm-system',
-            title: 'Custom CRM',
-            description: 'Tailored CRM solutions that fit your unique sales process.',
-            thumbnail: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&auto=format&fit=crop&q=80',
-            tags: ['CRM', 'Automation', 'Custom'],
-            metadata: {
-              type: 'web',
-              url: 'https://www.salesforce.com',
-              stack: 'Next.js + Prisma + PostgreSQL',
-              features: ['Pipeline Management', 'Email Integration', 'Reporting']
+              url: 'https://logiciancreatives.in',
+              stack: 'React + Three.js',
+              features: ['Custom Animations', 'Dark Mode', 'Mobile Optimized']
             }
           }
         ]

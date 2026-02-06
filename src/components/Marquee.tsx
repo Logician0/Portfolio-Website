@@ -10,7 +10,7 @@ export function Marquee() {
 
   return (
     <section className="py-8 sm:py-12 md:py-16 overflow-hidden border-y border-white/5">
-      {/* Section Label - Compact */}
+      {/* Section Label */}
       <motion.div 
         className="text-center mb-4 sm:mb-6"
         initial={{ opacity: 0, y: 15 }}
@@ -28,12 +28,11 @@ export function Marquee() {
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
         
-        {/* REPLACED: CSS class 'marquee' with GPU-accelerated motion.div */}
         <motion.div 
           className="flex"
-          animate={{ x: ['-50%', '0%'] }} // Moves Left to Right
+          animate={{ x: ['-50%', '0%'] }} 
           transition={{ 
-            duration: 40, // Slower for smoother visuals
+            duration: 40, 
             ease: "linear", 
             repeat: Infinity 
           }}
@@ -45,10 +44,10 @@ export function Marquee() {
               className={cn(
                 'flex-shrink-0 mx-1.5 sm:mx-3 px-3 sm:px-5 py-2 sm:py-3 rounded-xl sm:rounded-2xl',
                 'border border-white/10 bg-white/[0.02] backdrop-blur-xl',
-                'flex items-center gap-2 sm:gap-3 group cursor-pointer',
-                'hover:bg-white/[0.05] hover:border-white/20 transition-all duration-300'
+                'flex items-center gap-2 sm:gap-3 group cursor-pointer'
+                // REMOVED: transition-all and hover:bg/border to fix Non-Composited Animation error
               )}
-              whileHover={{ scale: 1.05, y: -3 }}
+              whileHover={{ scale: 1.05, y: -3, opacity: 0.9 }} // PERFORMANCE: Scale and Opacity are GPU-safe
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
               <span className="text-base sm:text-2xl">{tool.icon}</span>
@@ -65,16 +64,15 @@ export function Marquee() {
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
         
-        {/* REPLACED: CSS class 'marquee-reverse' with GPU-accelerated motion.div */}
         <motion.div 
           className="flex"
-          animate={{ x: ['0%', '-50%'] }} // Moves Right to Left
+          animate={{ x: ['0%', '-50%'] }} 
           transition={{ 
             duration: 40, 
             ease: "linear", 
             repeat: Infinity 
           }}
-          style={{ willChange: 'transform' }} // Forces GPU Rendering
+          style={{ willChange: 'transform' }} 
         >
           {[...toolsRow2, ...toolsRow2].map((tool, index) => (
             <motion.div
@@ -82,10 +80,10 @@ export function Marquee() {
               className={cn(
                 'flex-shrink-0 mx-3 px-5 py-3 rounded-2xl',
                 'border border-white/10 bg-white/[0.02] backdrop-blur-xl',
-                'flex items-center gap-3 group cursor-pointer',
-                'hover:bg-white/[0.05] hover:border-white/20 transition-all duration-300'
+                'flex items-center gap-3 group cursor-pointer'
+                // REMOVED: transition-all and hover:bg/border for performance
               )}
-              whileHover={{ scale: 1.05, y: -3 }}
+              whileHover={{ scale: 1.05, y: -3, opacity: 0.9 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
               <span className="text-2xl">{tool.icon}</span>
@@ -97,7 +95,7 @@ export function Marquee() {
         </motion.div>
       </div>
 
-      {/* Expertise Areas - Compact */}
+      {/* Expertise Areas */}
       <motion.div 
         className="mt-6 sm:mt-10 max-w-3xl mx-auto px-4"
         initial={{ opacity: 0, y: 15 }}
@@ -121,7 +119,8 @@ export function Marquee() {
               transition={{ delay: 0.2 + index * 0.05 }}
             >
               <div className="text-base sm:text-xl font-bold text-white">{item.count}</div>
-              <div className="text-[9px] sm:text-xs text-zinc-500">{item.label}</div>
+              {/* ACCESSIBILITY: Changed zinc-500 to zinc-400 for passing color contrast */}
+              <div className="text-[9px] sm:text-xs text-zinc-400 uppercase tracking-wider">{item.label}</div>
             </motion.div>
           ))}
         </div>
