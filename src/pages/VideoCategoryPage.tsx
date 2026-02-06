@@ -44,9 +44,10 @@ export function VideoCategoryPage() {
     <div className="min-h-screen bg-black text-white pt-24 pb-12 px-4 md:px-8">
       <div className="max-w-[1800px] mx-auto">
         
-        {/* Back Button */}
+        {/* Back Button - ACCESSIBILITY: Added aria-label */}
         <button 
           onClick={handleBack}
+          aria-label="Back to video category gallery"
           className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-6 transition-colors group bg-transparent border-none cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -56,27 +57,26 @@ export function VideoCategoryPage() {
         {currentVideo && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            {/* =========================================
-                LEFT COLUMN: PLAYER + INFO (8 cols)
-               ========================================= */}
+            {/* LEFT COLUMN */}
             <div className="lg:col-span-8">
               
               {/* VIDEO PLAYER */}
               <div className="mb-6 relative flex justify-center">
                 <div className={cn(
-                  "relative transition-all duration-300 rounded-xl overflow-hidden shadow-2xl border border-white/5", // Removed bg-black to fix bars
+                  "relative transition-all duration-300 rounded-xl overflow-hidden shadow-2xl border border-white/5",
                   isVertical 
-                    ? "w-full max-w-[300px] lg:max-w-[300px] aspect-[9/16]" // ✅ UNIFIED SIZE: 300px width for both (Mobile & Desktop)
+                    ? "w-full max-w-[300px] lg:max-w-[300px] aspect-[9/16]" 
                     : "w-full aspect-video"
                 )}>
                   {currentVideo.metadata.youtubeId ? (
                     <iframe
                       key={currentVideo.metadata.youtubeId}
                       src={`https://www.youtube.com/embed/${currentVideo.metadata.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-                      title={currentVideo.title}
+                      title={`Video player: ${currentVideo.title}`}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                       className="absolute inset-0 w-full h-full"
+                      loading="lazy" /* PERFORMANCE: Defer non-critical iframe */
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-zinc-500 bg-zinc-900">Video Source Missing</div>
@@ -94,15 +94,17 @@ export function VideoCategoryPage() {
                       </span>
                    </div>
                    <div className="flex items-center gap-3">
-                      <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors">
+                      {/* ACCESSIBILITY: Added aria-label to buttons without visible text descriptions */}
+                      <button aria-label="Like this video" className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors">
                         <ThumbsUp className="w-4 h-4" /> Like
                       </button>
-                      <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors">
+                      <button aria-label="Share this video" className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors">
                         <Share2 className="w-4 h-4" /> Share
                       </button>
                    </div>
                 </div>
                 <div className="p-5 rounded-xl bg-zinc-900/50 border border-white/5">
+                   {/* CONTRAST: Changed to text-zinc-300 for better readability */}
                    <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">
                       {currentVideo.description || "No description provided."}
                    </p>
@@ -110,12 +112,10 @@ export function VideoCategoryPage() {
               </div>
             </div>
 
-            {/* =========================================
-                RIGHT COLUMN: SMART SORTED SIDEBAR (4 cols)
-               ========================================= */}
+            {/* RIGHT COLUMN: SIDEBAR */}
             <div className="lg:col-span-4">
               <div className="sticky top-24">
-                 <h3 className="text-lg font-bold text-white mb-4">Up Next</h3>
+                 <h2 className="text-lg font-bold text-white mb-4">Up Next</h2>
                  
                  <div className="grid grid-cols-2 gap-4">
                     {sortedVideos.map((video) => {
@@ -125,8 +125,9 @@ export function VideoCategoryPage() {
                          <button
                             key={video.id}
                             onClick={() => handleVideoClick(video)}
+                            aria-label={`Play video: ${video.title}`}
                             className={cn(
-                              "group flex flex-col p-2 rounded-xl hover:bg-white/5 transition-colors text-left",
+                              "group flex flex-col p-2 rounded-xl hover:bg-white/5 transition-colors text-left bg-transparent border-none cursor-pointer",
                               isCardVertical ? "col-span-1" : "col-span-2"
                             )}
                          >
@@ -137,7 +138,8 @@ export function VideoCategoryPage() {
                             )}>
                                <img 
                                   src={video.thumbnail} 
-                                  alt={video.title} 
+                                  alt="" /* Decorative icon pattern, title is in heading below */
+                                  loading="lazy"
                                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                />
                                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
@@ -150,10 +152,11 @@ export function VideoCategoryPage() {
 
                             {/* TEXT */}
                             <div className="flex flex-col min-w-0">
-                               <h4 className="text-sm font-bold text-white line-clamp-2 leading-tight mb-1 group-hover:text-pink-400 transition-colors">
+                               <h3 className="text-sm font-bold text-white line-clamp-2 leading-tight mb-1 group-hover:text-pink-400 transition-colors">
                                   {video.title}
-                               </h4>
-                               <p className="text-xs text-zinc-500 line-clamp-1">{category.title}</p>
+                               </h3>
+                               {/* CONTRAST: Changed text-zinc-500 to text-zinc-400 */}
+                               <p className="text-xs text-zinc-400 line-clamp-1">{category.title}</p>
                             </div>
                          </button>
                        );

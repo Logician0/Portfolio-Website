@@ -174,7 +174,7 @@ export function SocialOrbit() {
                 
                 <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full overflow-hidden bg-zinc-900">
                   <img
-                    src="/my-photo.jpg" 
+                    src="/my-photo.webp" 
                     alt="Suraj Kumar - Founder & CEO of Logician Creatives"
                     className="w-full h-full object-cover opacity-95 group-hover:opacity-100 transition-opacity"
                     loading="eager"
